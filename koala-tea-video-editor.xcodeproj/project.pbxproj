@@ -1,0 +1,563 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		168E6AD82002AB01002679A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AD72002AB01002679A3 /* AppDelegate.swift */; };
+		168E6ADA2002AB01002679A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AD92002AB01002679A3 /* ViewController.swift */; };
+		168E6ADD2002AB01002679A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 168E6ADB2002AB01002679A3 /* Main.storyboard */; };
+		168E6ADF2002AB01002679A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 168E6ADE2002AB01002679A3 /* Assets.xcassets */; };
+		168E6AE22002AB01002679A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 168E6AE02002AB01002679A3 /* LaunchScreen.storyboard */; };
+		168E6AED2002AB01002679A3 /* koala_tea_video_editorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AEC2002AB01002679A3 /* koala_tea_video_editorTests.swift */; };
+		168E6AF82002AB01002679A3 /* koala_tea_video_editorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AF72002AB01002679A3 /* koala_tea_video_editorUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		168E6AE92002AB01002679A3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 168E6ACC2002AB01002679A3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 168E6AD32002AB01002679A3;
+			remoteInfo = "koala-tea-video-editor";
+		};
+		168E6AF42002AB01002679A3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 168E6ACC2002AB01002679A3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 168E6AD32002AB01002679A3;
+			remoteInfo = "koala-tea-video-editor";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		168E6AD42002AB01002679A3 /* koala-tea-video-editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "koala-tea-video-editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		168E6AD72002AB01002679A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		168E6AD92002AB01002679A3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		168E6ADC2002AB01002679A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		168E6ADE2002AB01002679A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		168E6AE12002AB01002679A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		168E6AE32002AB01002679A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		168E6AE82002AB01002679A3 /* koala-tea-video-editorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "koala-tea-video-editorTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		168E6AEC2002AB01002679A3 /* koala_tea_video_editorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = koala_tea_video_editorTests.swift; sourceTree = "<group>"; };
+		168E6AEE2002AB01002679A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		168E6AF32002AB01002679A3 /* koala-tea-video-editorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "koala-tea-video-editorUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		168E6AF72002AB01002679A3 /* koala_tea_video_editorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = koala_tea_video_editorUITests.swift; sourceTree = "<group>"; };
+		168E6AF92002AB01002679A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		168E6AD12002AB01002679A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		168E6AE52002AB01002679A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		168E6AF02002AB01002679A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		168E6ACB2002AB01002679A3 = {
+			isa = PBXGroup;
+			children = (
+				168E6AD62002AB01002679A3 /* koala-tea-video-editor */,
+				168E6AEB2002AB01002679A3 /* koala-tea-video-editorTests */,
+				168E6AF62002AB01002679A3 /* koala-tea-video-editorUITests */,
+				168E6AD52002AB01002679A3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		168E6AD52002AB01002679A3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				168E6AD42002AB01002679A3 /* koala-tea-video-editor.app */,
+				168E6AE82002AB01002679A3 /* koala-tea-video-editorTests.xctest */,
+				168E6AF32002AB01002679A3 /* koala-tea-video-editorUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		168E6AD62002AB01002679A3 /* koala-tea-video-editor */ = {
+			isa = PBXGroup;
+			children = (
+				168E6AD72002AB01002679A3 /* AppDelegate.swift */,
+				168E6AD92002AB01002679A3 /* ViewController.swift */,
+				168E6ADB2002AB01002679A3 /* Main.storyboard */,
+				168E6ADE2002AB01002679A3 /* Assets.xcassets */,
+				168E6AE02002AB01002679A3 /* LaunchScreen.storyboard */,
+				168E6AE32002AB01002679A3 /* Info.plist */,
+			);
+			path = "koala-tea-video-editor";
+			sourceTree = "<group>";
+		};
+		168E6AEB2002AB01002679A3 /* koala-tea-video-editorTests */ = {
+			isa = PBXGroup;
+			children = (
+				168E6AEC2002AB01002679A3 /* koala_tea_video_editorTests.swift */,
+				168E6AEE2002AB01002679A3 /* Info.plist */,
+			);
+			path = "koala-tea-video-editorTests";
+			sourceTree = "<group>";
+		};
+		168E6AF62002AB01002679A3 /* koala-tea-video-editorUITests */ = {
+			isa = PBXGroup;
+			children = (
+				168E6AF72002AB01002679A3 /* koala_tea_video_editorUITests.swift */,
+				168E6AF92002AB01002679A3 /* Info.plist */,
+			);
+			path = "koala-tea-video-editorUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		168E6AD32002AB01002679A3 /* koala-tea-video-editor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 168E6AFC2002AB01002679A3 /* Build configuration list for PBXNativeTarget "koala-tea-video-editor" */;
+			buildPhases = (
+				168E6AD02002AB01002679A3 /* Sources */,
+				168E6AD12002AB01002679A3 /* Frameworks */,
+				168E6AD22002AB01002679A3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "koala-tea-video-editor";
+			productName = "koala-tea-video-editor";
+			productReference = 168E6AD42002AB01002679A3 /* koala-tea-video-editor.app */;
+			productType = "com.apple.product-type.application";
+		};
+		168E6AE72002AB01002679A3 /* koala-tea-video-editorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 168E6AFF2002AB01002679A3 /* Build configuration list for PBXNativeTarget "koala-tea-video-editorTests" */;
+			buildPhases = (
+				168E6AE42002AB01002679A3 /* Sources */,
+				168E6AE52002AB01002679A3 /* Frameworks */,
+				168E6AE62002AB01002679A3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				168E6AEA2002AB01002679A3 /* PBXTargetDependency */,
+			);
+			name = "koala-tea-video-editorTests";
+			productName = "koala-tea-video-editorTests";
+			productReference = 168E6AE82002AB01002679A3 /* koala-tea-video-editorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		168E6AF22002AB01002679A3 /* koala-tea-video-editorUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 168E6B022002AB01002679A3 /* Build configuration list for PBXNativeTarget "koala-tea-video-editorUITests" */;
+			buildPhases = (
+				168E6AEF2002AB01002679A3 /* Sources */,
+				168E6AF02002AB01002679A3 /* Frameworks */,
+				168E6AF12002AB01002679A3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				168E6AF52002AB01002679A3 /* PBXTargetDependency */,
+			);
+			name = "koala-tea-video-editorUITests";
+			productName = "koala-tea-video-editorUITests";
+			productReference = 168E6AF32002AB01002679A3 /* koala-tea-video-editorUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		168E6ACC2002AB01002679A3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Koala Tea";
+				TargetAttributes = {
+					168E6AD32002AB01002679A3 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					168E6AE72002AB01002679A3 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 168E6AD32002AB01002679A3;
+					};
+					168E6AF22002AB01002679A3 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 168E6AD32002AB01002679A3;
+					};
+				};
+			};
+			buildConfigurationList = 168E6ACF2002AB01002679A3 /* Build configuration list for PBXProject "koala-tea-video-editor" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 168E6ACB2002AB01002679A3;
+			productRefGroup = 168E6AD52002AB01002679A3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				168E6AD32002AB01002679A3 /* koala-tea-video-editor */,
+				168E6AE72002AB01002679A3 /* koala-tea-video-editorTests */,
+				168E6AF22002AB01002679A3 /* koala-tea-video-editorUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		168E6AD22002AB01002679A3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				168E6AE22002AB01002679A3 /* LaunchScreen.storyboard in Resources */,
+				168E6ADF2002AB01002679A3 /* Assets.xcassets in Resources */,
+				168E6ADD2002AB01002679A3 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		168E6AE62002AB01002679A3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		168E6AF12002AB01002679A3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		168E6AD02002AB01002679A3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				168E6ADA2002AB01002679A3 /* ViewController.swift in Sources */,
+				168E6AD82002AB01002679A3 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		168E6AE42002AB01002679A3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				168E6AED2002AB01002679A3 /* koala_tea_video_editorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		168E6AEF2002AB01002679A3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				168E6AF82002AB01002679A3 /* koala_tea_video_editorUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		168E6AEA2002AB01002679A3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 168E6AD32002AB01002679A3 /* koala-tea-video-editor */;
+			targetProxy = 168E6AE92002AB01002679A3 /* PBXContainerItemProxy */;
+		};
+		168E6AF52002AB01002679A3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 168E6AD32002AB01002679A3 /* koala-tea-video-editor */;
+			targetProxy = 168E6AF42002AB01002679A3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		168E6ADB2002AB01002679A3 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				168E6ADC2002AB01002679A3 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		168E6AE02002AB01002679A3 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				168E6AE12002AB01002679A3 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		168E6AFA2002AB01002679A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		168E6AFB2002AB01002679A3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		168E6AFD2002AB01002679A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6MS9QWALYV;
+				INFOPLIST_FILE = "koala-tea-video-editor/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "koala-tea.koala-tea-video-editor";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		168E6AFE2002AB01002679A3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6MS9QWALYV;
+				INFOPLIST_FILE = "koala-tea-video-editor/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "koala-tea.koala-tea-video-editor";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		168E6B002002AB01002679A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6MS9QWALYV;
+				INFOPLIST_FILE = "koala-tea-video-editorTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "koala-tea.koala-tea-video-editorTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/koala-tea-video-editor.app/koala-tea-video-editor";
+			};
+			name = Debug;
+		};
+		168E6B012002AB01002679A3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6MS9QWALYV;
+				INFOPLIST_FILE = "koala-tea-video-editorTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "koala-tea.koala-tea-video-editorTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/koala-tea-video-editor.app/koala-tea-video-editor";
+			};
+			name = Release;
+		};
+		168E6B032002AB01002679A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6MS9QWALYV;
+				INFOPLIST_FILE = "koala-tea-video-editorUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "koala-tea.koala-tea-video-editorUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "koala-tea-video-editor";
+			};
+			name = Debug;
+		};
+		168E6B042002AB01002679A3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6MS9QWALYV;
+				INFOPLIST_FILE = "koala-tea-video-editorUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "koala-tea.koala-tea-video-editorUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "koala-tea-video-editor";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		168E6ACF2002AB01002679A3 /* Build configuration list for PBXProject "koala-tea-video-editor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				168E6AFA2002AB01002679A3 /* Debug */,
+				168E6AFB2002AB01002679A3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		168E6AFC2002AB01002679A3 /* Build configuration list for PBXNativeTarget "koala-tea-video-editor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				168E6AFD2002AB01002679A3 /* Debug */,
+				168E6AFE2002AB01002679A3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		168E6AFF2002AB01002679A3 /* Build configuration list for PBXNativeTarget "koala-tea-video-editorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				168E6B002002AB01002679A3 /* Debug */,
+				168E6B012002AB01002679A3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		168E6B022002AB01002679A3 /* Build configuration list for PBXNativeTarget "koala-tea-video-editorUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				168E6B032002AB01002679A3 /* Debug */,
+				168E6B042002AB01002679A3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 168E6ACC2002AB01002679A3 /* Project object */;
+}
