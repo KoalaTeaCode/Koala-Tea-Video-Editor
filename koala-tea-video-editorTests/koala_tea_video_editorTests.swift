@@ -7,13 +7,17 @@
 //
 
 import XCTest
+import AVFoundation
+import CoreImage
 @testable import koala_tea_video_editor
 
 class koala_tea_video_editorTests: XCTestCase {
     
+//    var videoWriter: VideoWriter? = nil
+    let filename = "testing.mp4"
+    
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
@@ -22,15 +26,13 @@ class koala_tea_video_editorTests: XCTestCase {
     }
     
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+        let expectation = XCTestExpectation(description: "create video")
+        
+        VideoHelpers.createAnimationLayer {
+            expectation.fulfill()
         }
+        
+        // Wait until the expectation is fulfilled, with a timeout of 10 seconds.
+        wait(for: [expectation], timeout: 240.0)
     }
-    
 }
