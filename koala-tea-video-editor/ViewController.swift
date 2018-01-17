@@ -90,10 +90,10 @@ class ViewController: UIViewController {
         longNoLayer.hideLayer(at: CACurrentMediaTime() + timePerFrame * 285)
 
         // Add CALayerToAdd to Parent Layer
-        self.view.layer.addSublayer(textLayer)
-        self.view.layer.addSublayer(godLayer)
-        self.view.layer.addSublayer(pleaseLayer)
-        self.view.layer.addSublayer(longNoLayer)
+//        self.view.layer.addSublayer(textLayer)
+//        self.view.layer.addSublayer(godLayer)
+//        self.view.layer.addSublayer(pleaseLayer)
+//        self.view.layer.addSublayer(longNoLayer)
 
         let reader = try! AVAssetReader(asset: avAsset)
 

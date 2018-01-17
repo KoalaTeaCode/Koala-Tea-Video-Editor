@@ -79,7 +79,7 @@ class FramesScrollerView: UIView {
         self.addSubview(scrollView)
 
         scrollView.contentOffset = CGPoint(x: -(scrollView.width/2), y: 0)
-        scrollView.decelerationRate = 0.2
+        scrollView.decelerationRate = 0.5
     }
 
     private func setupImageContainerView() {
