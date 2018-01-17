@@ -28,11 +28,11 @@ class koala_tea_video_editorTests: XCTestCase {
     func testExample() {
         let expectation = XCTestExpectation(description: "create video")
         
-        VideoHelpers.createAnimationLayer {
+        VideoManager.createAnimationLayer {
             expectation.fulfill()
         }
         
         // Wait until the expectation is fulfilled, with a timeout of 10 seconds.
-        wait(for: [expectation], timeout: 240.0)
+        wait(for: [expectation], timeout: 100.0)
     }
 }
