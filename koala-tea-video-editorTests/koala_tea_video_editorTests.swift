@@ -27,12 +27,18 @@ class koala_tea_video_editorTests: XCTestCase {
     
     func testExample() {
         let expectation = XCTestExpectation(description: "create video")
-        
-        VideoManager.createAnimationLayer {
-            expectation.fulfill()
-        }
-        
+
+        let currentMediaTime = CACurrentMediaTime()
+        let videoURL: URL = Bundle.main.url(forResource: "outputfile", withExtension: "mp4")!
+
+
+        let vid1 = VideoAsset(assetName: "test", url: videoURL, frame: CGRect(x: 0, y: 0, width: 640, height: 360))
+        let vid2 = VideoAsset(assetName: "test", url: videoURL, frame: CGRect(x: vid1.frame.maxX, y: vid1.frame.maxY, width: 640, height: 360))
+        VideoManager.exportMergedVideo(with: [vid1,vid2], croppedViewFrame: CGRect(x: 0, y: 0, width: 1280, height: 720))
+
+//        VideoManager.exportVideo(from: vid1.urlAsset, avPlayerFrame: CGRect(x: 0, y: 0, width: 375, height: 375/(16/9)), croppedViewFrame: CGRect(x: 0, y: 0, width: 300, height: 300), caLayers: [], currentMediaTimeUsed: currentMediaTime)
+
         // Wait until the expectation is fulfilled, with a timeout of 10 seconds.
-        wait(for: [expectation], timeout: 100.0)
+        wait(for: [expectation], timeout: 40.0)
     }
 }
