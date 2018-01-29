@@ -39,7 +39,8 @@ class koala_tea_video_editorTests: XCTestCase {
         vid2.setStartime(to: 3.0)
         vid2.setEndTime(to: 14.0)
 
-        VideoManager.exportMergedVideo(with: [vid1,vid2], croppedViewFrame: CGRect(x: 0, y: 0, width: 1280, height: 720))
+        VideoManager.exportMergedVideo(with: [vid1,vid2], croppedViewFrame: CGRect(x: 0, y: 0, width: 720, height: 720), finalExportSize: ._1080x1080)
+
 
 //        VideoManager.exportVideo(from: vid1.urlAsset, avPlayerFrame: CGRect(x: 0, y: 0, width: 375, height: 375/(16/9)), croppedViewFrame: CGRect(x: 0, y: 0, width: 300, height: 300), caLayers: [], currentMediaTimeUsed: currentMediaTime)
 

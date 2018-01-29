@@ -109,21 +109,8 @@ class ViewController: UIViewController {
         canvasView.layer.addSublayer(pleaseLayer)
         canvasView.layer.addSublayer(longNoLayer)
 
-        // Frame Reader
-//        let reader = try! AVAssetReader(asset: avAsset)
-//
-//        // read video frames as BGRA
-//        let trackReaderOutput = AVAssetReaderTrackOutput(track: videoTrack,
-//                                                         outputSettings:[String(kCVPixelBufferPixelFormatTypeKey): NSNumber(value: kCVPixelFormatType_32BGRA)])
-//        reader.add(trackReaderOutput)
-//        reader.startReading()
-//
-//        var i = 0
-//        while let sampleBuffer = trackReaderOutput.copyNextSampleBuffer() {
-//            let image = VideoManager.imageFromSampleBuffer(sampleBuffer: sampleBuffer)
-//            images.append(image)
-//            i += 1
-//        }
+        self.images = VideoManager.getAllFramesAsUIImages(for: asset.urlAsset)!
+
 //        //@TODO: end reading
 
 //        VideoManager.exportVideo(from: AVAsset(url: videoURL),

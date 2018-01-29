@@ -93,16 +93,34 @@ extension VideoAsset: Equatable {
     }
 }
 
+enum FinalExportSizes {
+    case _1080x1080
+    case _1280x720
+    case _720x1280
+    case _1920x1080
+    case _1080x1920
+}
+
+extension FinalExportSizes {
+    typealias RawValue = CGSize
+
+    var rawValue: RawValue {
+        switch self {
+        case ._1080x1080:
+            return CGSize(width: 1080, height: 1080)
+        case ._1280x720:
+            return CGSize(width: 1280, height: 720)
+        case ._720x1280:
+            return CGSize(width: 720, height: 1280)
+        case ._1920x1080:
+            return CGSize(width: 1920, height: 1080)
+        case ._1080x1920:
+            return CGSize(width: 1080, height: 1920)
+        }
+    }
+}
+
 public class VideoManager {
-    /**
-     Test
-
-     - Parameters:
-        - asset: The string to repeat.
-        - avPlayerView: The string to repeat.
-
-     - Returns:   float The degrees in the Celsius scale.
-     */
     public class func exportVideo(from asset: AVAsset, avPlayerFrame: CGRect, croppedViewFrame: CGRect, caLayers: [CALayer], currentMediaTimeUsed: Double) {
         guard let avMutableComposition = VideoManager.createAVMutableComposition(from: asset) else {
             return
@@ -590,7 +608,7 @@ public class VideoManager {
 
 
     // Lightning fast CMSampleBuffer to UIImage
-    static func imageFromSampleBuffer(sampleBuffer : CMSampleBuffer) -> UIImage {
+    private static func imageFromSampleBuffer(sampleBuffer : CMSampleBuffer) -> UIImage {
         // Get a CMSampleBuffer's Core Video image buffer for the media data
         let  imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
 
@@ -624,13 +642,51 @@ public class VideoManager {
 
         return (image);
     }
+
+    static func getAllFramesAsUIImages(for asset: AVAsset) -> [UIImage]? {
+        var images: [UIImage] = []
+
+        // Frame Reader
+        let reader = try! AVAssetReader(asset: asset)
+
+        guard let firstTrack = VideoManager.getFirstVideoTrack(from: asset) else {
+            return nil
+        }
+
+        // read video frames as BGRA
+        let trackReaderOutput = AVAssetReaderTrackOutput(track: firstTrack,
+                                                         outputSettings:[String(kCVPixelBufferPixelFormatTypeKey): NSNumber(value: kCVPixelFormatType_32BGRA)])
+        reader.add(trackReaderOutput)
+        reader.startReading()
+
+        var i = 0
+        while let sampleBuffer = trackReaderOutput.copyNextSampleBuffer() {
+            let image = VideoManager.imageFromSampleBuffer(sampleBuffer: sampleBuffer)
+            images.append(image)
+            i += 1
+        }
+
+        // @TODO: need to end reading?
+
+        return images
+    }
 }
 
+extension CGSize {
+    public func getAspectRatio() -> CGFloat {
+        return self.height / self.width
+    }
+}
 
 // Multiple assets
 extension VideoManager {
-    static func exportMergedVideo(with assets: [VideoAsset], croppedViewFrame: CGRect) {
-        let exportVideoSize = CGSize(width: 1280, height: 720)
+    static func exportMergedVideo(with assets: [VideoAsset], croppedViewFrame: CGRect, finalExportSize: FinalExportSizes) {
+        let exportVideoSize = finalExportSize.rawValue
+
+        guard croppedViewFrame.size.getAspectRatio() == exportVideoSize.getAspectRatio() else {
+            assertionFailure("Seleected export size's aspect ration does not equal Cropped View Frame's aspect ratio")
+            return
+        }
 
         // *Cropped view has to be same aspect ratio as export video size
         let heightMultiplier: CGFloat = exportVideoSize.height / croppedViewFrame.height
@@ -657,6 +713,7 @@ extension VideoManager {
         mainInstruction.layerInstructions = instructions
         let avMutableVideoComposition = AVMutableVideoComposition()
         avMutableVideoComposition.instructions = [mainInstruction]
+        //@TODO: Add framerate
         avMutableVideoComposition.frameDuration = CMTimeMake(1, 30)
         avMutableVideoComposition.renderSize = exportVideoSize
 
@@ -720,87 +777,6 @@ extension VideoManager {
         return instructions
     }
 
-//    static func getVideoCompositionInstructions(for assets: [VideoAsset]) -> [AVMutableVideoCompositionLayerInstruction] {
-//        var layerInstructions: [AVMutableVideoCompositionLayerInstruction] = []
-//
-//        let firstInstruction = videoCompositionInstructionForTrack(track: firstTrack!, asset: firstAsset.urlAsset)
-//        firstInstruction.setOpacity(0.0, at: firstAsset.urlAsset.duration)
-//
-//        for (index, asset) in assets.enumerated() {
-//            guard let track =
-//            let instruction = videoCompositionInstructionForTrack(track: <#T##AVCompositionTrack#>, asset: <#T##AVAsset#>)
-//        }
-//
-//        return layerInstructions
-//    }
-
-//    static func merge(firstAsset: VideoAsset?, secondAsset: VideoAsset?) {
-//        if let firstAsset = firstAsset, let secondAsset = secondAsset {
-//
-//            // 1 - Create AVMutableComposition object. This object will hold your AVMutableCompositionTrack instances.
-//            let mixComposition = AVMutableComposition()
-//
-//            // 2 - Create two video tracks
-//            let firstTrack = mixComposition.addMutableTrack(withMediaType: AVMediaType.video, preferredTrackID: Int32(kCMPersistentTrackID_Invalid))
-//            do {
-//                try firstTrack?.insertTimeRange(CMTimeRangeMake(kCMTimeZero, firstAsset.urlAsset.duration), of: firstAsset.urlAsset.tracks(withMediaType: AVMediaType.video).first!, at: kCMTimeZero)
-//            } catch _ {
-//                assertionFailure("Failed to load first track")
-//            }
-//
-//            let secondTrack = mixComposition.addMutableTrack(withMediaType: AVMediaType.video, preferredTrackID: Int32(kCMPersistentTrackID_Invalid))
-//            do {
-//                try secondTrack?.insertTimeRange(CMTimeRangeMake(kCMTimeZero, secondAsset.urlAsset.duration), of: secondAsset.urlAsset.tracks(withMediaType: AVMediaType.video).first!, at: firstAsset.urlAsset.duration)
-//            } catch _ {
-//                assertionFailure("Failed to load second track")
-//            }
-//
-//            // @TODO: create video tracks
-//            // @TODO: create create instructions
-//
-//            // 2.1
-//            let mainInstruction = AVMutableVideoCompositionInstruction()
-//            mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeAdd(firstAsset.urlAsset.duration, secondAsset.urlAsset.duration))
-//
-//            // 2.2
-//            let firstInstruction = videoCompositionInstructionForTrack(track: firstTrack!, asset: firstAsset.urlAsset)
-//            firstInstruction.setOpacity(0.0, at: firstAsset.urlAsset.duration)
-//            let secondInstruction = videoCompositionInstructionForTrack(track: secondTrack!, asset: secondAsset.urlAsset)
-//            secondInstruction.setOpacity(0.0, at: firstAsset.urlAsset.duration + secondAsset.urlAsset.duration)
-//
-//            // 2.3
-//            mainInstruction.layerInstructions = [firstInstruction, secondInstruction]
-//            let avMutableVideoComposition = AVMutableVideoComposition()
-//            avMutableVideoComposition.instructions = [mainInstruction]
-//            avMutableVideoComposition.frameDuration = CMTimeMake(1, 30)
-//            // @TODO: Get in render size
-//            avMutableVideoComposition.renderSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-//
-//            // 3 - Audio track
-////            if let loadedAudioAsset = audioAsset {
-////                let audioTrack = mixComposition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: 0)
-////                do {
-////                    try audioTrack.insertTimeRange(CMTimeRangeMake(kCMTimeZero, CMTimeAdd(firstAsset.duration, secondAsset.duration)),
-////                                                   ofTrack: loadedAudioAsset.tracksWithMediaType(AVMediaTypeAudio)[0] ,
-////                                                   atTime: kCMTimeZero)
-////                } catch _ {
-////                    print("Failed to load Audio track")
-////                }
-////            }
-//
-//            // 4 - Export
-//            VideoManager.exportVideo(avMutableComposition: mixComposition,
-//                                     avMutatableVideoComposition: avMutableVideoComposition,
-//                                     progress: { (progress) in
-//                print(progress)
-//            }, success: {
-////                completion()
-//            }) { (error) in
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
-
     static func videoCompositionInstructionForTrack(track: AVCompositionTrack, asset: VideoAsset, widthMultiplier: CGFloat, heightMultiplier: CGFloat) -> AVMutableVideoCompositionLayerInstruction {
         let instruction = AVMutableVideoCompositionLayerInstruction(assetTrack: track)
         let assetTrack = asset.urlAsset.tracks(withMediaType: AVMediaType.video).first!
@@ -842,34 +818,6 @@ extension VideoManager {
 //        }
         return instruction
     }
-
-//    static func videoCompositionInstructionForTrack(track: AVCompositionTrack, asset: AVAsset) -> AVMutableVideoCompositionLayerInstruction {
-//        let instruction = AVMutableVideoCompositionLayerInstruction(assetTrack: track)
-//        let assetTrack = asset.tracks(withMediaType: AVMediaType.video).first!
-//
-//        let transform = assetTrack.preferredTransform
-//        let assetInfo = orientationFromTransform(transform: transform)
-//
-//        var scaleToFitRatio = UIScreen.main.bounds.width / assetTrack.naturalSize.width
-//        if assetInfo.isPortrait {
-//            scaleToFitRatio = UIScreen.main.bounds.width / assetTrack.naturalSize.height
-//            let scaleFactor = CGAffineTransform(scaleX: scaleToFitRatio, y: scaleToFitRatio)
-//            instruction.setTransform(assetTrack.preferredTransform.concatenating(scaleFactor),
-//                                     at: kCMTimeZero)
-//        } else {
-//            let scaleFactor = CGAffineTransform(scaleX: scaleToFitRatio, y: scaleToFitRatio)
-//            var concat = assetTrack.preferredTransform.concatenating(scaleFactor).concatenating(CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.width / 2))
-//            if assetInfo.orientation == .down {
-//                let fixUpsideDown = CGAffineTransform(rotationAngle: CGFloat(M_PI))
-//                let windowBounds = UIScreen.main.bounds
-//                let yFix = assetTrack.naturalSize.height + windowBounds.height
-//                let centerFix = CGAffineTransform(translationX: assetTrack.naturalSize.width, y: yFix)
-//                concat = fixUpsideDown.concatenating(centerFix).concatenating(scaleFactor)
-//            }
-//            instruction.setTransform(concat, at: kCMTimeZero)
-//        }
-//        return instruction
-//    }
 
     static func orientationFromTransform(transform: CGAffineTransform) -> (orientation: UIImageOrientation, isPortrait: Bool) {
         var assetOrientation = UIImageOrientation.up

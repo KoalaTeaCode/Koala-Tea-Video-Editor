@@ -20,7 +20,6 @@
 		168E6B082002ADA9002679A3 /* FileHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6B072002ADA9002679A3 /* FileHelpers.swift */; };
 		168E6B0A2002B32A002679A3 /* VideoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6B092002B32A002679A3 /* VideoManager.swift */; };
 		169008E5200FDDDE00E5A476 /* FramesScrollerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169008E4200FDDDE00E5A476 /* FramesScrollerView.swift */; };
-		169A70A4200D8AD70082E382 /* ImageMorePerfomantClassesToFigureOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A70A3200D8AD70082E382 /* ImageMorePerfomantClassesToFigureOut.swift */; };
 		16F6289E2007F824008A5297 /* CoreAnimationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F6289D2007F824008A5297 /* CoreAnimationManager.swift */; };
 		16F628A02007F91D008A5297 /* CoreLayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F6289F2007F91D008A5297 /* CoreLayerManager.swift */; };
 		A32AE2181F72C291EB4A2AAD /* Pods_koala_tea_video_editorUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B2C86963A96EDD7785E99D /* Pods_koala_tea_video_editorUITests.framework */; };
@@ -63,7 +62,6 @@
 		168E6B072002ADA9002679A3 /* FileHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelpers.swift; sourceTree = "<group>"; };
 		168E6B092002B32A002679A3 /* VideoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoManager.swift; sourceTree = "<group>"; };
 		169008E4200FDDDE00E5A476 /* FramesScrollerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramesScrollerView.swift; sourceTree = "<group>"; };
-		169A70A3200D8AD70082E382 /* ImageMorePerfomantClassesToFigureOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMorePerfomantClassesToFigureOut.swift; sourceTree = "<group>"; };
 		16F6289D2007F824008A5297 /* CoreAnimationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAnimationManager.swift; sourceTree = "<group>"; };
 		16F6289F2007F91D008A5297 /* CoreLayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreLayerManager.swift; sourceTree = "<group>"; };
 		55209AC4AE48ACB71FC110C7 /* Pods-koala-tea-video-editorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-koala-tea-video-editorUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-koala-tea-video-editorUITests/Pods-koala-tea-video-editorUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -142,7 +140,6 @@
 				16F6289D2007F824008A5297 /* CoreAnimationManager.swift */,
 				16F6289F2007F91D008A5297 /* CoreLayerManager.swift */,
 				161DEE9B200BF18600D8571B /* UIImageExtensions.swift */,
-				169A70A3200D8AD70082E382 /* ImageMorePerfomantClassesToFigureOut.swift */,
 				169008E4200FDDDE00E5A476 /* FramesScrollerView.swift */,
 			);
 			path = "koala-tea-video-editor";
@@ -498,7 +495,6 @@
 			files = (
 				16F628A02007F91D008A5297 /* CoreLayerManager.swift in Sources */,
 				168E6B0A2002B32A002679A3 /* VideoManager.swift in Sources */,
-				169A70A4200D8AD70082E382 /* ImageMorePerfomantClassesToFigureOut.swift in Sources */,
 				161DEE9C200BF18600D8571B /* UIImageExtensions.swift in Sources */,
 				168E6ADA2002AB01002679A3 /* ViewController.swift in Sources */,
 				169008E5200FDDDE00E5A476 /* FramesScrollerView.swift in Sources */,
