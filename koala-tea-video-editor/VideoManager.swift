@@ -20,9 +20,6 @@ fileprivate enum VideoManagerError: Error {
 public class TimePoints {
     public var startTime: CMTime
     public var endTime: CMTime
-    public var duration: CMTime {
-        return endTime - startTime
-    }
 
     init(startTime: CMTime, endTime: CMTime) {
         self.startTime = startTime
@@ -52,7 +49,8 @@ public class VideoAsset {
     public var timePoints: TimePoints
 
     public var timeRange: CMTimeRange {
-        return CMTimeRangeMake(timePoints.startTime, timePoints.endTime)
+        let duration = timePoints.endTime - timePoints.startTime
+        return CMTimeRangeMake(timePoints.startTime, duration)
     }
 
     public var frame: CGRect
@@ -69,14 +67,20 @@ public class VideoAsset {
         self.frame = frame
     }
 
-    // @TODO: idk if 1200 is a good timescale to use
+    // @TODO: What is a good timescale to use? Does the timescale need to depend on framerate?
     public func setStartime(to time: Double) {
-        let cmTime = CMTimeMakeWithSeconds(time, 1200)
+        let cmTime = CMTimeMakeWithSeconds(time, 600)
         self.timePoints.startTime = cmTime
     }
 
     public func setEndTime(to time: Double) {
-        let cmTime = CMTimeMakeWithSeconds(time, 1200)
+        let cmTime = CMTimeMakeWithSeconds(time, 600)
+
+        if cmTime > self.urlAsset.duration {
+            self.timePoints.endTime = self.urlAsset.duration
+            return
+        }
+
         self.timePoints.endTime = cmTime
     }
 }
@@ -557,25 +561,25 @@ public class VideoManager {
                 timer?.invalidate()
                 break
             case .exporting:
-                print("exporting")
+                assertionFailure("exporting")
                 break
             case .waiting:
-                print("waiting")
+                assertionFailure("waiting")
                 break
             case .cancelled:
-                print("cancelled")
+                assertionFailure("cancelled")
                 failure(VideoManagerError.CancelledError)
 
                 timer?.invalidate()
                 break
             case .failed:
-                print("failed: \(assetExport.error!)")
+                assertionFailure("failed: \(assetExport.error!)")
                 failure(VideoManagerError.FailedError)
 
                 timer?.invalidate()
                 break
             case .unknown:
-                print("unknown")
+                assertionFailure("unknown")
                 failure(VideoManagerError.UnknownError)
 
                 timer?.invalidate()
@@ -640,8 +644,9 @@ extension VideoManager {
 
         var totalVideoDuration = kCMTimeZero
         for asset in assets {
-            totalVideoDuration = totalVideoDuration + asset.timePoints.duration
+            totalVideoDuration = CMTimeAdd(totalVideoDuration, asset.timeRange.duration)
         }
+
         mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, totalVideoDuration)
 
         // 2 - Add all asset tracks to mixComposition
@@ -654,6 +659,18 @@ extension VideoManager {
         avMutableVideoComposition.instructions = [mainInstruction]
         avMutableVideoComposition.frameDuration = CMTimeMake(1, 30)
         avMutableVideoComposition.renderSize = exportVideoSize
+
+        // - Audio track
+        if let loadedAudioAsset = assets.first?.urlAsset {
+            let audioTrack = mixComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: 0)
+            do {
+                try audioTrack?.insertTimeRange(CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(2.0, 1)),
+                                                of: loadedAudioAsset.tracks(withMediaType: .audio).first!,
+                                                at: kCMTimeZero)
+            } catch _ {
+                print("Failed to load audio track")
+            }
+        }
 
         // - Export
         VideoManager.exportVideo(avMutableComposition: mixComposition,
@@ -679,17 +696,21 @@ extension VideoManager {
                 guard let firstTrack = asset.urlAsset.tracks(withMediaType: AVMediaType.video).first else {
                     throw VideoManagerError.NoFirstVideoTrack
                 }
+
                 var startTime = kCMTimeZero
 
                 if index != 0 {
                     let previousAsset = assets[index - 1]
-                    nextAssetsStartTime = nextAssetsStartTime + previousAsset.timePoints.duration
+                    nextAssetsStartTime = nextAssetsStartTime + previousAsset.timeRange.duration
                     startTime = nextAssetsStartTime
                 }
 
                 try track?.insertTimeRange(timeRange, of: firstTrack, at: startTime)
 
                 let instruction = videoCompositionInstructionForTrack(track: track!, asset: asset, widthMultiplier: widthMultiplier, heightMultiplier: heightMultiplier)
+
+                instruction.setOpacity(0.0, at: startTime + timeRange.duration)
+
                 instructions.append(instruction)
             } catch _ {
                 assertionFailure("Failed to load first track")
@@ -814,7 +835,7 @@ extension VideoManager {
         let scaledY: CGFloat = asset.frame.minY * heightMultiplier
         let scaledWidth = asset.frame.width * widthMultiplier
         let scaledHeight = asset.frame.height * heightMultiplier
-        
+
             let transform = CGAffineTransform(from: CGRect(x: 0, y: 0, width: assetTrack.naturalSize.width, height: assetTrack.naturalSize.height),
                                               toRect: CGRect(x: scaledX, y: scaledY, width: scaledWidth, height: scaledHeight))
             instruction.setTransform(transform, at: kCMTimeZero)
