@@ -30,16 +30,22 @@ class koala_tea_video_editorTests: XCTestCase {
 
         let currentMediaTime = CACurrentMediaTime()
         let videoURL: URL = Bundle.main.url(forResource: "outputfile", withExtension: "mp4")!
+        let videoURL2: URL = Bundle.main.url(forResource: "vertical", withExtension: "mp4")!
 
-
-        let vid1 = VideoAsset(assetName: "test", url: videoURL, frame: CGRect(x: 0, y: 0, width: 640, height: 360))
+        let frame = CGRect(x: 0, y: 0, width: 720, height: 720)
+        let vid1 = VideoAsset(assetName: "vert", url: videoURL2, frame: CGRect(origin: CGPoint(x: frame.midX - 200, y: frame.midY - 200), size: CanvasFrameSizes._9x16(forSize: CGSize(width: 720, height: 720)).rawValue))
         vid1.setStartime(to: 0.0)
-        vid1.setEndTime(to: 3.0)
-        let vid2 = VideoAsset(assetName: "test", url: videoURL, frame: CGRect(x: vid1.frame.maxX, y: vid1.frame.maxY, width: 640, height: 360))
-        vid2.setStartime(to: 3.0)
-        vid2.setEndTime(to: 14.0)
+        vid1.setEndTime(to: 6.0)
 
-        VideoManager.exportMergedVideo(with: [vid1,vid2], croppedViewFrame: CGRect(x: 0, y: 0, width: 720, height: 720), finalExportSize: ._1080x1080)
+        let vid2 = VideoAsset(assetName: "test", url: videoURL, frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CanvasFrameSizes._16x9(forSize: CGSize(width: 720, height: 720)).rawValue))
+        vid2.setStartime(to: 0.0)
+        vid2.setEndTime(to: 6.0)
+
+        let vid3 = VideoAsset(assetName: "vert", url: videoURL2, frame: CGRect(origin: CGPoint(x: frame.midX - 200, y: frame.midY - 200), size: CanvasFrameSizes._9x16(forSize: CGSize(width: 720, height: 720)).rawValue))
+        vid3.setStartime(to: 0.0)
+        vid3.setEndTime(to: 6.0)
+
+        VideoManager.exportMergedVideo(with: [vid1, vid2, vid3], croppedViewFrame: frame, finalExportSize: ._1080x1080)
 
 
 //        VideoManager.exportVideo(from: vid1.urlAsset, avPlayerFrame: CGRect(x: 0, y: 0, width: 375, height: 375/(16/9)), croppedViewFrame: CGRect(x: 0, y: 0, width: 300, height: 300), caLayers: [], currentMediaTimeUsed: currentMediaTime)

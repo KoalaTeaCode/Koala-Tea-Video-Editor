@@ -64,6 +64,7 @@ public class VideoAsset {
         let timePoints = TimePoints(startTime: kCMTimeZero, endTime: self.urlAsset.duration)
         self.timePoints = timePoints
 
+        print(urlAsset.tracks.first!.naturalSize)
         self.frame = frame
     }
 
@@ -93,7 +94,7 @@ extension VideoAsset: Equatable {
     }
 }
 
-enum FinalExportSizes {
+enum VideoExportSizes {
     case _1080x1080
     case _1280x720
     case _720x1280
@@ -101,7 +102,7 @@ enum FinalExportSizes {
     case _1080x1920
 }
 
-extension FinalExportSizes {
+extension VideoExportSizes {
     typealias RawValue = CGSize
 
     var rawValue: RawValue {
@@ -117,6 +118,71 @@ extension FinalExportSizes {
         case ._1080x1920:
             return CGSize(width: 1080, height: 1920)
         }
+    }
+}
+
+enum CanvasFrameSizes {
+    case _1x1(forSize: CGSize)
+    case _16x9(forSize: CGSize)
+    case _9x16(forSize: CGSize)
+    case _3x4(forSize: CGSize)
+    case _4x3(forSize: CGSize)
+    case _2x1(forSize: CGSize)
+    case _1x2(forSize: CGSize)
+}
+
+extension CanvasFrameSizes {
+    typealias RawValue = CGSize
+
+    var rawValue: RawValue {
+        switch self {
+        case ._1x1(let frameSize):
+            return CGSize(width: 1, height: 1).aspectFit(to: frameSize)
+        case ._16x9(let frameSize):
+            return CGSize(width: 16, height: 9).aspectFit(to: frameSize)
+        case ._9x16(let frameSize):
+            return CGSize(width: 9, height: 16).aspectFit(to: frameSize)
+        case ._3x4(let frameSize):
+            return CGSize(width: 3, height: 4).aspectFit(to: frameSize)
+        case ._4x3(let frameSize):
+            return CGSize(width: 4, height: 3).aspectFit(to: frameSize)
+        case ._1x2(let frameSize):
+            return CGSize(width: 1, height: 2).aspectFit(to: frameSize)
+        case ._2x1(let frameSize):
+            return CGSize(width: 2, height: 1).aspectFit(to: frameSize)
+        }
+    }
+}
+
+extension CGSize {
+    static func aspectFit(aspectRatio : CGSize, boundingSize: CGSize) -> CGSize {
+        var boundingSize = boundingSize
+        let mW = boundingSize.width / aspectRatio.width;
+        let mH = boundingSize.height / aspectRatio.height;
+
+        if( mH < mW ) {
+            boundingSize.width = boundingSize.height / aspectRatio.height * aspectRatio.width;
+        }
+        else if( mW < mH ) {
+            boundingSize.height = boundingSize.width / aspectRatio.width * aspectRatio.height;
+        }
+
+        return boundingSize;
+    }
+
+    static func aspectFill(aspectRatio :CGSize, minimumSize: CGSize) -> CGSize {
+        var minimumSize = minimumSize
+        let mW = minimumSize.width / aspectRatio.width;
+        let mH = minimumSize.height / aspectRatio.height;
+
+        if( mH > mW ) {
+            minimumSize.width = minimumSize.height / aspectRatio.height * aspectRatio.width;
+        }
+        else if( mW > mH ) {
+            minimumSize.height = minimumSize.width / aspectRatio.width * aspectRatio.height;
+        }
+
+        return minimumSize;
     }
 }
 
@@ -201,7 +267,7 @@ public class VideoManager {
         /*
          MARK: Video Exporter
          */
-        VideoManager.exportVideo(avMutableComposition: avMutableComposition,
+        VideoManager.exportVideoToDiskFrom(avMutableComposition: avMutableComposition,
                                  avMutatableVideoComposition: avMutableVideoComposition,
                                  progress: { (progress) in
             print(progress)
@@ -293,7 +359,7 @@ public class VideoManager {
             /*
              MARK: Video Exporter
              */
-            VideoManager.exportVideo(avMutableComposition: avMutableComposition,
+            VideoManager.exportVideoToDiskFrom(avMutableComposition: avMutableComposition,
                                      avMutatableVideoComposition: avMutableVideoComposition,
                                      progress: { (progress) in
                 print(progress)
@@ -519,7 +585,7 @@ public class VideoManager {
         /*
          MARK: Video Exporter
          */
-        VideoManager.exportVideo(avMutableComposition: avMutableComposition,
+        VideoManager.exportVideoToDiskFrom(avMutableComposition: avMutableComposition,
                                  avMutatableVideoComposition: avMutableVideoComposition,
         progress: { (progress) in
             print(progress)
@@ -529,83 +595,6 @@ public class VideoManager {
             print(error.localizedDescription)
         }
     }
-    
-    public static func exportVideo(avMutableComposition: AVMutableComposition,
-                                   avMutatableVideoComposition: AVMutableVideoComposition,
-                                   progress: @escaping (Float) -> (),
-                                   success: @escaping () -> (),
-                                   failure: @escaping (Error) -> ()) {
-        //////////////////////
-        //MARK: Export Video//
-        //////////////////////
-        guard let fileURL = FileHelpers.getDocumentsURL(for: "test", extension: "mp4") else {
-            return
-        }
-        
-        // Remove any file at URL
-        // If file exists assetExport will fail
-        FileHelpers.removeFileAtURL(fileURL: fileURL)
-        
-        //////////////////////////////
-        //MARK: AVAssetExportSession//
-        //////////////////////////////
-        
-        guard let assetExport = AVAssetExportSession(asset: avMutableComposition, presetName: AVAssetExportPresetHighestQuality) else { return }
-        assetExport.videoComposition = avMutatableVideoComposition
-        assetExport.outputFileType = AVFileType.mp4
-        assetExport.shouldOptimizeForNetworkUse = true
-        assetExport.outputURL = fileURL
-        
-        // Schedule timer for sending progress
-
-        var timer: Timer? = nil
-
-        if #available(iOS 10.0, *) {
-            timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { (timer) in
-                progress(assetExport.progress)
-            })
-        } else {
-            // Fallback on earlier versions
-        }
-        
-        assetExport.exportAsynchronously(completionHandler: {
-            //@TODO: Show status or pass it back in completion
-            switch assetExport.status {
-            case .completed:
-                print("success")
-                success()
-                print(fileURL)
-
-                timer?.invalidate()
-                break
-            case .exporting:
-                assertionFailure("exporting")
-                break
-            case .waiting:
-                assertionFailure("waiting")
-                break
-            case .cancelled:
-                assertionFailure("cancelled")
-                failure(VideoManagerError.CancelledError)
-
-                timer?.invalidate()
-                break
-            case .failed:
-                assertionFailure("failed: \(assetExport.error!)")
-                failure(VideoManagerError.FailedError)
-
-                timer?.invalidate()
-                break
-            case .unknown:
-                assertionFailure("unknown")
-                failure(VideoManagerError.UnknownError)
-
-                timer?.invalidate()
-                break
-            }
-        })
-    }
-
 
     // Lightning fast CMSampleBuffer to UIImage
     private static func imageFromSampleBuffer(sampleBuffer : CMSampleBuffer) -> UIImage {
@@ -680,7 +669,69 @@ extension CGSize {
 
 // Multiple assets
 extension VideoManager {
-    static func exportMergedVideo(with assets: [VideoAsset], croppedViewFrame: CGRect, finalExportSize: FinalExportSizes) {
+    public static func exportVideoToDiskFrom(avMutableComposition: AVMutableComposition,
+                                             avMutatableVideoComposition: AVMutableVideoComposition,
+                                             progress: @escaping (Float) -> (),
+                                             success: @escaping () -> (),
+                                             failure: @escaping (Error) -> ()) {
+        guard let fileURL = FileHelpers.getDocumentsURL(for: "test", extension: "mp4") else {
+            return
+        }
+
+        // Remove any file at URL
+        // If file exists assetExport will fail
+        FileHelpers.removeFileAtURL(fileURL: fileURL)
+
+        // Create AVAssetExportSession
+        guard let assetExport = AVAssetExportSession(asset: avMutableComposition, presetName: AVAssetExportPresetHighestQuality) else { return }
+        assetExport.videoComposition = avMutatableVideoComposition
+        assetExport.outputFileType = AVFileType.mp4
+        assetExport.shouldOptimizeForNetworkUse = true
+        assetExport.outputURL = fileURL
+
+        // Schedule timer for sending progress
+        var timer: Timer? = nil
+
+        if #available(iOS 10.0, *) {
+            timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { (timer) in
+                progress(assetExport.progress)
+            })
+        } else {
+            // Fallback on earlier versions
+        }
+
+        assetExport.exportAsynchronously(completionHandler: {
+            timer?.invalidate()
+            //@TODO: Show status or pass it back in completion
+            switch assetExport.status {
+            case .completed:
+                print("success")
+                success()
+                print(fileURL)
+                break
+            case .exporting:
+                assertionFailure("exporting")
+                break
+            case .waiting:
+                assertionFailure("waiting")
+                break
+            case .cancelled:
+                assertionFailure("cancelled")
+                failure(VideoManagerError.CancelledError)
+                break
+            case .failed:
+                assertionFailure("failed: \(assetExport.error!)")
+                failure(VideoManagerError.FailedError)
+                break
+            case .unknown:
+                assertionFailure("unknown")
+                failure(VideoManagerError.UnknownError)
+                break
+            }
+        })
+    }
+
+    static func exportMergedVideo(with assets: [VideoAsset], croppedViewFrame: CGRect, finalExportSize: VideoExportSizes) {
         let exportVideoSize = finalExportSize.rawValue
 
         guard croppedViewFrame.size.getAspectRatio() == exportVideoSize.getAspectRatio() else {
@@ -730,18 +781,18 @@ extension VideoManager {
         }
 
         // - Export
-        VideoManager.exportVideo(avMutableComposition: mixComposition,
-                                 avMutatableVideoComposition: avMutableVideoComposition,
-                                 progress: { (progress) in
-            print(progress)
+        self.exportVideoToDiskFrom(avMutableComposition: mixComposition,
+                                   avMutatableVideoComposition: avMutableVideoComposition,
+                                   progress: { (progress) in
+                                    print(progress)
         }, success: {
-//                completion()
+            //                completion()
         }) { (error) in
             print(error.localizedDescription)
         }
     }
 
-    static func add(assets: [VideoAsset], to composition: AVMutableComposition, widthMultiplier: CGFloat, heightMultiplier: CGFloat) -> [AVMutableVideoCompositionLayerInstruction] {
+    private static func add(assets: [VideoAsset], to composition: AVMutableComposition, widthMultiplier: CGFloat, heightMultiplier: CGFloat) -> [AVMutableVideoCompositionLayerInstruction] {
         var instructions: [AVMutableVideoCompositionLayerInstruction] = []
 
         var nextAssetsStartTime = kCMTimeZero
@@ -777,49 +828,35 @@ extension VideoManager {
         return instructions
     }
 
-    static func videoCompositionInstructionForTrack(track: AVCompositionTrack, asset: VideoAsset, widthMultiplier: CGFloat, heightMultiplier: CGFloat) -> AVMutableVideoCompositionLayerInstruction {
+    private static func videoCompositionInstructionForTrack(track: AVCompositionTrack, asset: VideoAsset, widthMultiplier: CGFloat, heightMultiplier: CGFloat) -> AVMutableVideoCompositionLayerInstruction {
         let instruction = AVMutableVideoCompositionLayerInstruction(assetTrack: track)
         let assetTrack = asset.urlAsset.tracks(withMediaType: AVMediaType.video).first!
 
-        // @TODO: Add in fixing rotation issue for portrait and .down videos
+        // @TODO: check if we need asset info or if it works
 //        let transform = assetTrack.preferredTransform
 //        let assetInfo = orientationFromTransform(transform: transform)
 
-//        var scaleToFitRatio = size.width / assetTrack.naturalSize.width
-//        if assetInfo.isPortrait {
-//            scaleToFitRatio = size.width / assetTrack.naturalSize.height
-//            let scaleFactor = CGAffineTransform(scaleX: scaleToFitRatio, y: scaleToFitRatio)
-//            instruction.setTransform(assetTrack.preferredTransform.concatenating(scaleFactor),
-//                                     at: kCMTimeZero)
-//        } else {
-//            let scaleFactor = CGAffineTransform(scaleX: scaleToFitRatio, y: scaleToFitRatio)
-            // @TODO: why do we need to transform?
-//            var concat = assetTrack.preferredTransform.concatenating(scaleFactor).concatenating(CGAffineTransform(translationX: 0, y: 0))
-//            var concat = assetTrack.preferredTransform.concatenating(scaleFactor).concatenating(CGAffineTransform(translationX: 0, y: size.width / 2))
-//            if assetInfo.orientation == .down {
-//                let fixUpsideDown = CGAffineTransform(rotationAngle: CGFloat(M_PI))
-//                let windowBounds = size
-//                let yFix = assetTrack.naturalSize.height + windowBounds.height
-//                let centerFix = CGAffineTransform(translationX: assetTrack.naturalSize.width, y: yFix)
-//                concat = fixUpsideDown.concatenating(centerFix).concatenating(scaleFactor)
-//            }
-//            instruction.setTransform(concat, at: kCMTimeZero)
-//        let heightMultiplier: CGFloat = exportVideoSize.height / croppedViewFrame.height
-//        let widthMultiplier: CGFloat = exportVideoSize.width / croppedViewFrame.width
-
         let scaledX: CGFloat = asset.frame.minX * widthMultiplier
         let scaledY: CGFloat = asset.frame.minY * heightMultiplier
-        let scaledWidth = asset.frame.width * widthMultiplier
-        let scaledHeight = asset.frame.height * heightMultiplier
 
-            let transform = CGAffineTransform(from: CGRect(x: 0, y: 0, width: assetTrack.naturalSize.width, height: assetTrack.naturalSize.height),
-                                              toRect: CGRect(x: scaledX, y: scaledY, width: scaledWidth, height: scaledHeight))
-            instruction.setTransform(transform, at: kCMTimeZero)
-//        }
+        var scaledWidth = asset.frame.width * widthMultiplier
+        var scaledHeight = asset.frame.height * heightMultiplier
+
+        let isPortrait = assetTrack.naturalSize.height > assetTrack.naturalSize.width
+
+        if isPortrait {
+            scaledWidth = asset.frame.width * heightMultiplier
+            scaledHeight = asset.frame.height * widthMultiplier
+        }
+
+        let transform = CGAffineTransform(from: CGRect(x: 0, y: 0, width: assetTrack.naturalSize.width, height: assetTrack.naturalSize.height),
+                                          toRect: CGRect(x: scaledX, y: scaledY, width: scaledWidth, height: scaledHeight))
+        instruction.setTransform(transform, at: kCMTimeZero)
         return instruction
     }
 
-    static func orientationFromTransform(transform: CGAffineTransform) -> (orientation: UIImageOrientation, isPortrait: Bool) {
+    // @TODO: check if this works
+    private static func orientationFromTransform(transform: CGAffineTransform) -> (orientation: UIImageOrientation, isPortrait: Bool) {
         var assetOrientation = UIImageOrientation.up
         var isPortrait = false
         if transform.a == 0 && transform.b == 1.0 && transform.c == -1.0 && transform.d == 0 {

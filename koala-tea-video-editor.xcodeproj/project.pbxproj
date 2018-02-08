@@ -10,6 +10,7 @@
 		08C9D7EA4050A58583AA885F /* Pods_koala_tea_video_editor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D817F68B0ABD3C4B291FD132 /* Pods_koala_tea_video_editor.framework */; };
 		161DEE9C200BF18600D8571B /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161DEE9B200BF18600D8571B /* UIImageExtensions.swift */; };
 		1638809F200D181500C4A3B7 /* outputfile.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1638809E200D181400C4A3B7 /* outputfile.mp4 */; };
+		1646B625202BD4210050F430 /* vertical.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1646B624202BD4210050F430 /* vertical.mp4 */; };
 		168E6AD82002AB01002679A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AD72002AB01002679A3 /* AppDelegate.swift */; };
 		168E6ADA2002AB01002679A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AD92002AB01002679A3 /* ViewController.swift */; };
 		168E6ADD2002AB01002679A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 168E6ADB2002AB01002679A3 /* Main.storyboard */; };
@@ -46,6 +47,7 @@
 /* Begin PBXFileReference section */
 		161DEE9B200BF18600D8571B /* UIImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
 		1638809E200D181400C4A3B7 /* outputfile.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = outputfile.mp4; sourceTree = "<group>"; };
+		1646B624202BD4210050F430 /* vertical.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = vertical.mp4; sourceTree = "<group>"; };
 		168E6AD42002AB01002679A3 /* koala-tea-video-editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "koala-tea-video-editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		168E6AD72002AB01002679A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		168E6AD92002AB01002679A3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 		168E6AD62002AB01002679A3 /* koala-tea-video-editor */ = {
 			isa = PBXGroup;
 			children = (
+				1646B624202BD4210050F430 /* vertical.mp4 */,
 				1638809E200D181400C4A3B7 /* outputfile.mp4 */,
 				168E6AD72002AB01002679A3 /* AppDelegate.swift */,
 				168E6AD92002AB01002679A3 /* ViewController.swift */,
@@ -311,6 +314,7 @@
 				168E6ADF2002AB01002679A3 /* Assets.xcassets in Resources */,
 				1638809F200D181500C4A3B7 /* outputfile.mp4 in Resources */,
 				168E6ADD2002AB01002679A3 /* Main.storyboard in Resources */,
+				1646B625202BD4210050F430 /* vertical.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

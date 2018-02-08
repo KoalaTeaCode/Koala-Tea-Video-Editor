@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         canvasView.center = self.view.center
         canvasView.clipsToBounds = true
         canvasView.backgroundColor = .black
-        self.view.addSubview(canvasView)
+//        self.view.addSubview(canvasView)
 
         let asset = Asset(assetName: "Test", url: videoURL)
         self.assetPlayer = AssetPlayer(asset: asset)
@@ -118,6 +118,22 @@ class ViewController: UIViewController {
 //                                 croppedViewFrame: canvasView.frame,
 //                                 caLayers: [textLayer, godLayer, pleaseLayer, longNoLayer],
 //                                 currentMediaTimeUsed: currentMediaTime)
+
+        let view = UIView(frame: CGRect.zero)
+
+
+        view.backgroundColor = .red
+
+        let secondView = UIView(frame: .zero)
+        secondView.size = CGSize(width: 375, height: 375)
+        secondView.backgroundColor = .blue
+
+        view.size = CanvasFrameSizes._9x16(forSize: secondView.size).rawValue
+
+        secondView.addSubview(view)
+        view.center = secondView.center
+
+        self.view.addSubview(secondView)
     }
 
     override func didReceiveMemoryWarning() {
