@@ -8,9 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		08C9D7EA4050A58583AA885F /* Pods_koala_tea_video_editor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D817F68B0ABD3C4B291FD132 /* Pods_koala_tea_video_editor.framework */; };
-		161DEE9C200BF18600D8571B /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161DEE9B200BF18600D8571B /* UIImageExtensions.swift */; };
 		1638809F200D181500C4A3B7 /* outputfile.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1638809E200D181400C4A3B7 /* outputfile.mp4 */; };
 		1646B625202BD4210050F430 /* vertical.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1646B624202BD4210050F430 /* vertical.mp4 */; };
+		1646B627202BD7F50050F430 /* CMBufferHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1646B626202BD7F50050F430 /* CMBufferHelper.swift */; };
+		1646B629202BD8070050F430 /* CGSizeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1646B628202BD8070050F430 /* CGSizeExtensions.swift */; };
+		1646B62B202BD82B0050F430 /* VideoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1646B62A202BD82B0050F430 /* VideoAsset.swift */; };
+		1646B62D202BD8560050F430 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1646B62C202BD8560050F430 /* CanvasView.swift */; };
+		1646B62F202BD9270050F430 /* AVAssetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1646B62E202BD9270050F430 /* AVAssetExtensions.swift */; };
 		168E6AD82002AB01002679A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AD72002AB01002679A3 /* AppDelegate.swift */; };
 		168E6ADA2002AB01002679A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AD92002AB01002679A3 /* ViewController.swift */; };
 		168E6ADD2002AB01002679A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 168E6ADB2002AB01002679A3 /* Main.storyboard */; };
@@ -45,9 +49,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		161DEE9B200BF18600D8571B /* UIImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
 		1638809E200D181400C4A3B7 /* outputfile.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = outputfile.mp4; sourceTree = "<group>"; };
 		1646B624202BD4210050F430 /* vertical.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = vertical.mp4; sourceTree = "<group>"; };
+		1646B626202BD7F50050F430 /* CMBufferHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMBufferHelper.swift; sourceTree = "<group>"; };
+		1646B628202BD8070050F430 /* CGSizeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSizeExtensions.swift; sourceTree = "<group>"; };
+		1646B62A202BD82B0050F430 /* VideoAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAsset.swift; sourceTree = "<group>"; };
+		1646B62C202BD8560050F430 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		1646B62E202BD9270050F430 /* AVAssetExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAssetExtensions.swift; sourceTree = "<group>"; };
 		168E6AD42002AB01002679A3 /* koala-tea-video-editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "koala-tea-video-editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		168E6AD72002AB01002679A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		168E6AD92002AB01002679A3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -105,6 +113,73 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1646B630202BD9880050F430 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				168E6ADE2002AB01002679A3 /* Assets.xcassets */,
+				1646B624202BD4210050F430 /* vertical.mp4 */,
+				1638809E200D181400C4A3B7 /* outputfile.mp4 */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		1646B631202BD99D0050F430 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				168E6ADB2002AB01002679A3 /* Main.storyboard */,
+				168E6AE02002AB01002679A3 /* LaunchScreen.storyboard */,
+				168E6AD72002AB01002679A3 /* AppDelegate.swift */,
+				168E6AE32002AB01002679A3 /* Info.plist */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		1646B633202BD9D30050F430 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				168E6B072002ADA9002679A3 /* FileHelpers.swift */,
+				1646B626202BD7F50050F430 /* CMBufferHelper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		1646B634202BD9ED0050F430 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				168E6AD92002AB01002679A3 /* ViewController.swift */,
+				169008E4200FDDDE00E5A476 /* FramesScrollerView.swift */,
+				1646B62C202BD8560050F430 /* CanvasView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		1646B635202BDA680050F430 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1646B62E202BD9270050F430 /* AVAssetExtensions.swift */,
+				1646B628202BD8070050F430 /* CGSizeExtensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		1646B636202BDA730050F430 /* VideoExporting */ = {
+			isa = PBXGroup;
+			children = (
+				168E6B092002B32A002679A3 /* VideoManager.swift */,
+				1646B62A202BD82B0050F430 /* VideoAsset.swift */,
+			);
+			path = VideoExporting;
+			sourceTree = "<group>";
+		};
+		1646B637202BDA800050F430 /* CoreAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				16F6289D2007F824008A5297 /* CoreAnimationManager.swift */,
+				16F6289F2007F91D008A5297 /* CoreLayerManager.swift */,
+			);
+			path = CoreAnimation;
+			sourceTree = "<group>";
+		};
 		168E6ACB2002AB01002679A3 = {
 			isa = PBXGroup;
 			children = (
@@ -130,20 +205,13 @@
 		168E6AD62002AB01002679A3 /* koala-tea-video-editor */ = {
 			isa = PBXGroup;
 			children = (
-				1646B624202BD4210050F430 /* vertical.mp4 */,
-				1638809E200D181400C4A3B7 /* outputfile.mp4 */,
-				168E6AD72002AB01002679A3 /* AppDelegate.swift */,
-				168E6AD92002AB01002679A3 /* ViewController.swift */,
-				168E6ADB2002AB01002679A3 /* Main.storyboard */,
-				168E6ADE2002AB01002679A3 /* Assets.xcassets */,
-				168E6AE02002AB01002679A3 /* LaunchScreen.storyboard */,
-				168E6AE32002AB01002679A3 /* Info.plist */,
-				168E6B072002ADA9002679A3 /* FileHelpers.swift */,
-				168E6B092002B32A002679A3 /* VideoManager.swift */,
-				16F6289D2007F824008A5297 /* CoreAnimationManager.swift */,
-				16F6289F2007F91D008A5297 /* CoreLayerManager.swift */,
-				161DEE9B200BF18600D8571B /* UIImageExtensions.swift */,
-				169008E4200FDDDE00E5A476 /* FramesScrollerView.swift */,
+				1646B631202BD99D0050F430 /* Core */,
+				1646B630202BD9880050F430 /* Resources */,
+				1646B634202BD9ED0050F430 /* UI */,
+				1646B633202BD9D30050F430 /* Helpers */,
+				1646B636202BDA730050F430 /* VideoExporting */,
+				1646B635202BDA680050F430 /* Extensions */,
+				1646B637202BDA800050F430 /* CoreAnimation */,
 			);
 			path = "koala-tea-video-editor";
 			sourceTree = "<group>";
@@ -498,12 +566,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				16F628A02007F91D008A5297 /* CoreLayerManager.swift in Sources */,
+				1646B62F202BD9270050F430 /* AVAssetExtensions.swift in Sources */,
+				1646B627202BD7F50050F430 /* CMBufferHelper.swift in Sources */,
+				1646B62B202BD82B0050F430 /* VideoAsset.swift in Sources */,
 				168E6B0A2002B32A002679A3 /* VideoManager.swift in Sources */,
-				161DEE9C200BF18600D8571B /* UIImageExtensions.swift in Sources */,
 				168E6ADA2002AB01002679A3 /* ViewController.swift in Sources */,
 				169008E5200FDDDE00E5A476 /* FramesScrollerView.swift in Sources */,
 				168E6AD82002AB01002679A3 /* AppDelegate.swift in Sources */,
 				168E6B082002ADA9002679A3 /* FileHelpers.swift in Sources */,
+				1646B62D202BD8560050F430 /* CanvasView.swift in Sources */,
+				1646B629202BD8070050F430 /* CGSizeExtensions.swift in Sources */,
 				16F6289E2007F824008A5297 /* CoreAnimationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

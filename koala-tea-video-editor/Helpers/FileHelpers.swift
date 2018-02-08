@@ -25,6 +25,7 @@ public class FileHelpers {
         }
         catch _ as NSError {
             // Assume file doesn't exist.
+            print("Can not find file to remove")
         }
     }
 }
