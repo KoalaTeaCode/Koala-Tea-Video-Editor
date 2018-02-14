@@ -10,6 +10,75 @@ import UIKit
 import AVFoundation
 import KoalaTeaPlayer
 
+protocol EditableLayerProtocol {
+    var startTime: Double { get }
+    var endTime: Double { get }
+    var frame: CGRect { get set }
+    func setStartTime(to time: Double)
+    func setEndTime(to time: Double)
+}
+
+class EditableLayer: EditableLayerProtocol {
+    var frame: CGRect {
+        didSet {
+            self.frameWasSet()
+        }
+    }
+
+    var startTime: Double
+
+    var endTime: Double
+
+    init() {
+        self.frame = .zero
+        self.startTime = 0
+        self.endTime = 0
+    }
+
+    func setStartTime(to time: Double) {
+        self.startTime = time
+    }
+
+    func setEndTime(to time: Double) {
+        self.endTime = time
+    }
+
+    func frameWasSet() {
+
+    }
+}
+
+class CATextEditableLayer: EditableLayer {
+    var caTextLayer: CATextLayer
+
+    override init() {
+        self.caTextLayer = CoreLayerManager.createTextLayer(frame: .zero, text: "Your Text Here")
+        self.caTextLayer.opacity = 0
+        super.init()
+    }
+
+    func setText(to text: String) {
+        self.caTextLayer.string = text
+    }
+
+    func play() {
+        self.caTextLayer.showLayer(at: startTime)
+        self.caTextLayer.hideLayer(at: endTime, currentMediaTime: CACurrentMediaTime())
+    }
+
+    func stop() {
+        self.caTextLayer.removeAllAnimations()
+    }
+
+    func addToSuperview(_ superView: UIView) {
+        superView.layer.addSublayer(self.caTextLayer)
+    }
+
+    override func frameWasSet() {
+        self.caTextLayer.frame = self.frame
+    }
+}
+
 class ViewController: UIViewController {
 
     var assetPlayer: AssetPlayer?
@@ -22,6 +91,17 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let tlayer = CATextEditableLayer()
+        tlayer.setText(to: "test")
+        tlayer.frame = CGRect(x: 0, y: 88, width: 200, height: 200)
+        tlayer.setStartTime(to: 5)
+        tlayer.setEndTime(to: 10)
+        tlayer.addToSuperview(self.view)
+
+        tlayer.play()
+
+
+
         let videoURL: URL = Bundle.main.url(forResource: "outputfile", withExtension: "mp4")!
         let avAsset = AVAsset(url: videoURL)
 
@@ -104,12 +184,12 @@ class ViewController: UIViewController {
         longNoLayer.hideLayer(at: timePerFrame * (285 + 6), currentMediaTime: currentMediaTime)
 
         // Add CALayerToAdd to Parent Layer
-        canvasView.layer.addSublayer(textLayer)
-        canvasView.layer.addSublayer(godLayer)
-        canvasView.layer.addSublayer(pleaseLayer)
-        canvasView.layer.addSublayer(longNoLayer)
+//        canvasView.layer.addSublayer(textLayer)
+//        canvasView.layer.addSublayer(godLayer)
+//        canvasView.layer.addSublayer(pleaseLayer)
+//        canvasView.layer.addSublayer(longNoLayer)
 
-        self.images = asset.urlAsset.getAllFramesAsUIImages()!
+//        self.images = asset.urlAsset.getAllFramesAsUIImages()!
 
 //        VideoManager.exportVideo(from: AVAsset(url: videoURL),
 //                                 avPlayerFrame: playerView!.frame,
@@ -117,26 +197,49 @@ class ViewController: UIViewController {
 //                                 caLayers: [textLayer, godLayer, pleaseLayer, longNoLayer],
 //                                 currentMediaTimeUsed: currentMediaTime)
 
-        let view = UIView(frame: CGRect.zero)
-
-
-        view.backgroundColor = .red
-
-        let secondView = UIView(frame: .zero)
-        secondView.size = CGSize(width: 375, height: 375)
-        secondView.backgroundColor = .blue
-
-        view.size = CanvasFrameSizes._9x16(forSize: secondView.size).rawValue
-
-        secondView.addSubview(view)
-        view.center = secondView.center
-
-        self.view.addSubview(secondView)
+//        if UIVideoEditorController.canEditVideo(atPath: videoURL.path) {
+//            let editController = UIVideoEditorController()
+//            editController.videoPath = videoURL.path
+//            editController.delegate = self
+//            self.present(editController, animated: true, completion: nil)
+//        }
+//return
+//        let view = UIView(frame: CGRect.zero)
+//
+//
+//        view.backgroundColor = .red
+//
+//        let secondView = UIView(frame: .zero)
+//        secondView.size = CGSize(width: 375, height: 375)
+//        secondView.backgroundColor = .blue
+//
+//        view.size = CanvasFrameSizes._9x16(forSize: secondView.size).rawValue
+//
+//        secondView.addSubview(view)
+//        view.center = secondView.center
+//
+//        self.view.addSubview(secondView)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+}
+
+extension ViewController : UIVideoEditorControllerDelegate, UINavigationControllerDelegate {
+    func videoEditorController(_ editor: UIVideoEditorController,
+                               didSaveEditedVideoToPath editedVideoPath: String) {
+        print(editedVideoPath)
+        print("saved!")
+    }
+    
+    func videoEditorControllerDidCancel(_ editor: UIVideoEditorController) {
+        print("cancel")
+    }
+
+    func videoEditorController(_ editor: UIVideoEditorController, didFailWithError error: Error) {
+        print("did fail")
     }
 }
 

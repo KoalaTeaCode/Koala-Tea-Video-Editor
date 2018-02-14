@@ -75,7 +75,6 @@ extension CALayer {
 }
 
 extension CALayer {
-    //@TODO: add completion?
     public func showLayer(at beginTime: Double, till endTime: Double? = nil, currentMediaTime: Double) {
         let animation = KTCABasicAnimation()
         animation.mediaTime = currentMediaTime
