@@ -20,6 +20,10 @@ enum CALayerGeometryKeyPaths {
     case scaleX
     case scaleY
     case scaleZ
+    case rotate
+    case rotateX
+    case rotateY
+    case rotateZ
     
     var key: String {
         switch self {
@@ -43,7 +47,16 @@ enum CALayerGeometryKeyPaths {
             return #keyPath(CALayer.transform) + ".scale" + ".y"
         case .scaleZ:
             return #keyPath(CALayer.transform) + ".scale" + ".z"
+        case .rotate:
+            return #keyPath(CALayer.transform) + ".rotate"
+        case .rotateX:
+            return #keyPath(CALayer.transform) + ".rotate" + ".x"
+        case .rotateY:
+            return #keyPath(CALayer.transform) + ".rotate" + ".y"
+        case .rotateZ:
+            return #keyPath(CALayer.transform) + ".rotate" + ".z"
         }
+        //@TODO: Rotate
     }
 }
 
@@ -112,9 +125,7 @@ extension CALayer {
 //@TODO: Find out how this may fit into workflow
 //mostly if this breaks setting the frame on init
 
-//////////////////////////
-//MARK: Size To Fit Text//
-//////////////////////////
+// MARK: Size To Fit Text
 // Have to set this before display()
 extension CATextLayer {
     private func getTextAdjustedSize() -> CGSize? {

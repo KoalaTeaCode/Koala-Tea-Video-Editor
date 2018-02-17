@@ -16,6 +16,8 @@ protocol EditableLayerProtocol {
     var frame: CGRect { get set }
     func setStartTime(to time: Double)
     func setEndTime(to time: Double)
+    func frameWasSet()
+    func handlePlaying(at time: Double)
 }
 
 class EditableLayer: EditableLayerProtocol {
@@ -43,17 +45,21 @@ class EditableLayer: EditableLayerProtocol {
         self.endTime = time
     }
 
-    func frameWasSet() {
+    func frameWasSet() {}
 
-    }
+    /// Function to handle animations in the layer by the time of a video
+    func handlePlaying(at time: Double) {}
 }
 
 class CATextEditableLayer: EditableLayer {
     var caTextLayer: CATextLayer
+    var animations: [CABasicAnimation] = []
+    var visible: Bool = false
 
     override init() {
         self.caTextLayer = CoreLayerManager.createTextLayer(frame: .zero, text: "Your Text Here")
         self.caTextLayer.opacity = 0
+
         super.init()
     }
 
@@ -61,13 +67,35 @@ class CATextEditableLayer: EditableLayer {
         self.caTextLayer.string = text
     }
 
-    func play() {
-        self.caTextLayer.showLayer(at: startTime)
-        self.caTextLayer.hideLayer(at: endTime, currentMediaTime: CACurrentMediaTime())
+    func setFont(to font: UIFont) {
+        self.caTextLayer.font = font
+        self.caTextLayer.fontSize = font.pointSize
+
+        // @TODO: Set frame height accordingly?
     }
 
-    func stop() {
-        self.caTextLayer.removeAllAnimations()
+    func setTextColor(to color: UIColor) {
+        self.caTextLayer.foregroundColor = color.cgColor
+    }
+
+    override func setStartTime(to startTime: Double) {
+        super.setStartTime(to: startTime)
+
+        // Create show animation
+        let animation = CABasicAnimation.showLayerAnimation(at: startTime)
+        
+        // Add animation to [animations] to be used on export
+        self.animations.append(animation)
+    }
+
+    override func setEndTime(to endTime: Double) {
+        super.setEndTime(to: endTime)
+
+        // Create hide animation
+        let animation = CABasicAnimation.hideLayerAnimation(at: endTime)
+
+        // Add animation to [animations] to be used on export
+        self.animations.append(animation)
     }
 
     func addToSuperview(_ superView: UIView) {
@@ -76,6 +104,39 @@ class CATextEditableLayer: EditableLayer {
 
     override func frameWasSet() {
         self.caTextLayer.frame = self.frame
+    }
+
+    override func handlePlaying(at time: Double) {
+        super.handlePlaying(at: time)
+
+        guard time >= startTime && time <= endTime else {
+            hideLayer()
+            return
+        }
+
+        showLayer()
+    }
+
+    private func showLayer() {
+        guard !self.visible else {
+            return
+        }
+        self.visible = true
+
+        let animation = CABasicAnimation.showLayerAnimation()
+
+        self.caTextLayer.add(animation, forKey: "show")
+    }
+
+    private func hideLayer() {
+        guard self.visible else {
+            return
+        }
+        self.visible = false
+
+        let animation = CABasicAnimation.hideLayerAnimation()
+
+        self.caTextLayer.add(animation, forKey: "hide")
     }
 }
 
@@ -89,27 +150,17 @@ class ViewController: UIViewController {
 
     var images = [UIImage]()
 
+    let tlayer = CATextEditableLayer()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        let tlayer = CATextEditableLayer()
-        tlayer.setText(to: "test")
-        tlayer.frame = CGRect(x: 0, y: 88, width: 200, height: 200)
-        tlayer.setStartTime(to: 5)
-        tlayer.setEndTime(to: 10)
-        tlayer.addToSuperview(self.view)
-
-        tlayer.play()
-
-
-
-        let videoURL: URL = Bundle.main.url(forResource: "outputfile", withExtension: "mp4")!
-        let avAsset = AVAsset(url: videoURL)
 
         canvasView.center = self.view.center
         canvasView.clipsToBounds = true
         canvasView.backgroundColor = .black
-//        self.view.addSubview(canvasView)
+        self.view.addSubview(canvasView)
 
+        let videoURL: URL = Bundle.main.url(forResource: "outputfile", withExtension: "mp4")!
         let asset = Asset(assetName: "Test", url: videoURL)
         self.assetPlayer = AssetPlayer(asset: asset)
         assetPlayer?.playerDelegate = self
@@ -117,108 +168,17 @@ class ViewController: UIViewController {
         assetPlayer?.shouldLoop = true
 
         playerView = assetPlayer?.playerView
-//        playerView?.frame = CGRect(x: 0, y: (canvasView.height/2) - (210.94/2), width: canvasView.width, height: 210.94)
         playerView?.frame = CGRect(x: 0, y: 0, width: canvasView.height * (16/9), height: canvasView.height)
 
         canvasView.addSubview(playerView!)
 
-        let tracks =  avAsset.tracks(withMediaType: AVMediaType.video)
-        let videoTrack: AVAssetTrack = tracks.first!
-
-        let divisor: CGFloat = 3.4133333
-
-        let layerHeight: CGFloat = 173 / divisor
-        let playerFrameWidth = canvasView.contentView.frame.width
-        let layerWidth = playerFrameWidth
-
-        let y = canvasView.contentView.frame.maxY - layerHeight
-
-        let textLayer = CoreLayerManager.createTextLayer(frame: CGRect(x: 0, y: y, width: layerWidth, height: layerHeight),
-                                                         text: "NO",
-                                                         textColor: .white,
-                                                         font: UIFont.systemFont(ofSize: 124.0 / divisor, weight: .bold))
-
-        let longNoLayer = CoreLayerManager.createTextLayer(frame: CGRect(x: layerWidth, y: y, width: (layerWidth * 2), height: layerHeight),
-                                                           text: "NO" + String(repeating: "O", count: 200),
-                                                           textColor: .white,
-                                                           font: UIFont.systemFont(ofSize: 124 / divisor, weight: .bold))
-
-        let godLayer = CoreLayerManager.createTextLayer(frame: CGRect(x: 0, y: y, width: layerWidth, height: layerHeight),
-                                                        text: "GOD",
-                                                        textColor: .white,
-                                                        font: UIFont.systemFont(ofSize: 124 / divisor, weight: .bold))
-
-        let pleaseLayer = CoreLayerManager.createTextLayer(frame: CGRect(x: 0, y: y, width: layerWidth, height: layerHeight),
-                                                           text: "PLEASE",
-                                                           textColor: .white,
-                                                           font: UIFont.systemFont(ofSize: 124 / divisor, weight: .bold))
-
-
-        // @TODO: figure out variable framerate checking
-        let frameRate = videoTrack.nominalFrameRate
-        let timePerFrame: Double = Double(1.0 / frameRate)
-
-        // Get current Media Time for start of all animations
-        // Current Media Time is used only when displaying on device
-        let currentMediaTime = CACurrentMediaTime()
-
-        textLayer.hideLayer(at: -1.0, currentMediaTime: currentMediaTime)
-        textLayer.showLayer(at: timePerFrame * (18 + 6), till: timePerFrame * (35 + 6), currentMediaTime: currentMediaTime)
-        textLayer.showLayer(at: timePerFrame * (107 + 6), till: timePerFrame * (114 + 6), currentMediaTime: currentMediaTime)
-        textLayer.showLayer(at: timePerFrame * (151 + 6), till: timePerFrame * (162 + 6), currentMediaTime: currentMediaTime)
-        textLayer.showLayer(at: timePerFrame * (169 + 6), till: timePerFrame * (180 + 6), currentMediaTime: currentMediaTime)
-        textLayer.showLayer(at: timePerFrame * (206 + 6), till: timePerFrame * (218 + 6), currentMediaTime: currentMediaTime)
-
-        godLayer.hideLayer(at: -1.0, currentMediaTime: currentMediaTime)
-        godLayer.showLayer(at: timePerFrame * (42 + 6), till: timePerFrame * (56 + 6), currentMediaTime: currentMediaTime)
-        godLayer.showLayer(at: timePerFrame * (124 + 6), till: timePerFrame * (130 + 6), currentMediaTime: currentMediaTime)
-
-        pleaseLayer.hideLayer(at: -1.0, currentMediaTime: currentMediaTime)
-        pleaseLayer.showLayer(at: timePerFrame * (136 + 6), till: timePerFrame * (146 + 6), currentMediaTime: currentMediaTime)
-
-        longNoLayer.hideLayer(at: -1.0, currentMediaTime: currentMediaTime)
-        longNoLayer.showLayer(at: timePerFrame * (258 + 6), till: timePerFrame * (285 + 6), currentMediaTime: currentMediaTime)
-
-        let duration = (timePerFrame * (300 + 6)) - (timePerFrame * (258 + 6))
-        longNoLayer.changePositionX(to: -300, beginTime: timePerFrame * (258 + 6), duration: duration, currentMediaTime: currentMediaTime)
-        longNoLayer.hideLayer(at: timePerFrame * (285 + 6), currentMediaTime: currentMediaTime)
-
-        // Add CALayerToAdd to Parent Layer
-//        canvasView.layer.addSublayer(textLayer)
-//        canvasView.layer.addSublayer(godLayer)
-//        canvasView.layer.addSublayer(pleaseLayer)
-//        canvasView.layer.addSublayer(longNoLayer)
-
-//        self.images = asset.urlAsset.getAllFramesAsUIImages()!
-
-//        VideoManager.exportVideo(from: AVAsset(url: videoURL),
-//                                 avPlayerFrame: playerView!.frame,
-//                                 croppedViewFrame: canvasView.frame,
-//                                 caLayers: [textLayer, godLayer, pleaseLayer, longNoLayer],
-//                                 currentMediaTimeUsed: currentMediaTime)
-
-//        if UIVideoEditorController.canEditVideo(atPath: videoURL.path) {
-//            let editController = UIVideoEditorController()
-//            editController.videoPath = videoURL.path
-//            editController.delegate = self
-//            self.present(editController, animated: true, completion: nil)
-//        }
-//return
-//        let view = UIView(frame: CGRect.zero)
-//
-//
-//        view.backgroundColor = .red
-//
-//        let secondView = UIView(frame: .zero)
-//        secondView.size = CGSize(width: 375, height: 375)
-//        secondView.backgroundColor = .blue
-//
-//        view.size = CanvasFrameSizes._9x16(forSize: secondView.size).rawValue
-//
-//        secondView.addSubview(view)
-//        view.center = secondView.center
-//
-//        self.view.addSubview(secondView)
+        tlayer.setText(to: "TESTING")
+        tlayer.setFont(to: .italicSystemFont(ofSize: 150))
+        tlayer.setTextColor(to: .red)
+        tlayer.frame = CGRect(x: 0, y: 88, width: 200, height: 200)
+        tlayer.setStartTime(to: 3)
+        tlayer.setEndTime(to: 6)
+        tlayer.addToSuperview(self.canvasView)
     }
 
     override func didReceiveMemoryWarning() {
@@ -249,7 +209,6 @@ extension ViewController: AssetPlayerDelegate {
     }
 
     func playerIsSetup(_ player: AssetPlayer) {
-        assetPlayer?.pause()
         guard player.duration != 0 && !player.duration.isNaN else {
             return
         }
@@ -263,6 +222,7 @@ extension ViewController: AssetPlayerDelegate {
     }
 
     func playerCurrentTimeDidChange(_ player: AssetPlayer) {
+        self.tlayer.handlePlaying(at: player.currentTime)
     }
 
     func playerPlaybackDidEnd(_ player: AssetPlayer) {

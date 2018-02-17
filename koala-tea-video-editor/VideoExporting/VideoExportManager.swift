@@ -68,8 +68,6 @@ public class VideoExportManager {
                 break
             }
 
-            layer.removeAnimationsCurrentMediaTimeFor(currentMediaTimeUsed: currentMediaTimeUsed)
-
             layer.backgroundColor = UIColor.red.cgColor
 
             let scaledWidth = layer.frame.width * widthMultiplier
