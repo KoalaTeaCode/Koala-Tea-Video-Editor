@@ -15,6 +15,8 @@
 		1646B62B202BD82B0050F430 /* VideoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1646B62A202BD82B0050F430 /* VideoAsset.swift */; };
 		1646B62D202BD8560050F430 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1646B62C202BD8560050F430 /* CanvasView.swift */; };
 		1646B62F202BD9270050F430 /* AVAssetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1646B62E202BD9270050F430 /* AVAssetExtensions.swift */; };
+		166ADCFD203BAF0700F7508E /* LayerSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166ADCFC203BAF0700F7508E /* LayerSliderView.swift */; };
+		166ADCFF203BBAF500F7508E /* VideoEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166ADCFE203BBAF500F7508E /* VideoEditorViewController.swift */; };
 		168E6AD82002AB01002679A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AD72002AB01002679A3 /* AppDelegate.swift */; };
 		168E6ADA2002AB01002679A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AD92002AB01002679A3 /* ViewController.swift */; };
 		168E6ADD2002AB01002679A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 168E6ADB2002AB01002679A3 /* Main.storyboard */; };
@@ -25,6 +27,12 @@
 		168E6B082002ADA9002679A3 /* FileHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6B072002ADA9002679A3 /* FileHelpers.swift */; };
 		168E6B0A2002B32A002679A3 /* VideoExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6B092002B32A002679A3 /* VideoExportManager.swift */; };
 		169008E5200FDDDE00E5A476 /* FramesScrollerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169008E4200FDDDE00E5A476 /* FramesScrollerView.swift */; };
+		16CA273120389C2700C1DE62 /* LayerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CA273020389C2700C1DE62 /* LayerTableViewController.swift */; };
+		16CA273320389CFC00C1DE62 /* LayerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CA273220389CFB00C1DE62 /* LayerTableViewCell.swift */; };
+		16CA27382038D1D600C1DE62 /* RangeSeekSliderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CA27352038D1D600C1DE62 /* RangeSeekSliderDelegate.swift */; };
+		16CA27392038D1D600C1DE62 /* TapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CA27362038D1D600C1DE62 /* TapticEngine.swift */; };
+		16CA273A2038D1D600C1DE62 /* RangeSeekSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CA27372038D1D600C1DE62 /* RangeSeekSlider.swift */; };
+		16CA2740203A50AD00C1DE62 /* EditableLayerSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CA273F203A50AD00C1DE62 /* EditableLayerSlider.swift */; };
 		16DCC7A2202E97D900B941F8 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 16DCC7A1202E97D800B941F8 /* Default-568h@2x.png */; };
 		16F6289E2007F824008A5297 /* CoreAnimationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F6289D2007F824008A5297 /* CoreAnimationManager.swift */; };
 		16F628A02007F91D008A5297 /* CoreLayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F6289F2007F91D008A5297 /* CoreLayerManager.swift */; };
@@ -57,6 +65,8 @@
 		1646B62A202BD82B0050F430 /* VideoAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAsset.swift; sourceTree = "<group>"; };
 		1646B62C202BD8560050F430 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		1646B62E202BD9270050F430 /* AVAssetExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAssetExtensions.swift; sourceTree = "<group>"; };
+		166ADCFC203BAF0700F7508E /* LayerSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSliderView.swift; sourceTree = "<group>"; };
+		166ADCFE203BBAF500F7508E /* VideoEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEditorViewController.swift; sourceTree = "<group>"; };
 		168E6AD42002AB01002679A3 /* koala-tea-video-editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "koala-tea-video-editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		168E6AD72002AB01002679A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		168E6AD92002AB01002679A3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -73,6 +83,12 @@
 		168E6B072002ADA9002679A3 /* FileHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelpers.swift; sourceTree = "<group>"; };
 		168E6B092002B32A002679A3 /* VideoExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExportManager.swift; sourceTree = "<group>"; };
 		169008E4200FDDDE00E5A476 /* FramesScrollerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramesScrollerView.swift; sourceTree = "<group>"; };
+		16CA273020389C2700C1DE62 /* LayerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerTableViewController.swift; sourceTree = "<group>"; };
+		16CA273220389CFB00C1DE62 /* LayerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerTableViewCell.swift; sourceTree = "<group>"; };
+		16CA27352038D1D600C1DE62 /* RangeSeekSliderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSeekSliderDelegate.swift; sourceTree = "<group>"; };
+		16CA27362038D1D600C1DE62 /* TapticEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapticEngine.swift; sourceTree = "<group>"; };
+		16CA27372038D1D600C1DE62 /* RangeSeekSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSeekSlider.swift; sourceTree = "<group>"; };
+		16CA273F203A50AD00C1DE62 /* EditableLayerSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableLayerSlider.swift; sourceTree = "<group>"; };
 		16DCC7A1202E97D800B941F8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		16F6289D2007F824008A5297 /* CoreAnimationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAnimationManager.swift; sourceTree = "<group>"; };
 		16F6289F2007F91D008A5297 /* CoreLayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreLayerManager.swift; sourceTree = "<group>"; };
@@ -147,9 +163,14 @@
 		1646B634202BD9ED0050F430 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				166ADCFB203BAEEC00F7508E /* LayerUI */,
+				16CA27342038D1CA00C1DE62 /* RangeSeekSlider */,
 				168E6AD92002AB01002679A3 /* ViewController.swift */,
 				169008E4200FDDDE00E5A476 /* FramesScrollerView.swift */,
 				1646B62C202BD8560050F430 /* CanvasView.swift */,
+				16CA273020389C2700C1DE62 /* LayerTableViewController.swift */,
+				16CA273220389CFB00C1DE62 /* LayerTableViewCell.swift */,
+				166ADCFE203BBAF500F7508E /* VideoEditorViewController.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -179,6 +200,15 @@
 				16F6289F2007F91D008A5297 /* CoreLayerManager.swift */,
 			);
 			path = CoreAnimation;
+			sourceTree = "<group>";
+		};
+		166ADCFB203BAEEC00F7508E /* LayerUI */ = {
+			isa = PBXGroup;
+			children = (
+				16CA273F203A50AD00C1DE62 /* EditableLayerSlider.swift */,
+				166ADCFC203BAF0700F7508E /* LayerSliderView.swift */,
+			);
+			path = LayerUI;
 			sourceTree = "<group>";
 		};
 		168E6ACB2002AB01002679A3 = {
@@ -235,6 +265,16 @@
 				168E6AF92002AB01002679A3 /* Info.plist */,
 			);
 			path = "koala-tea-video-editorUITests";
+			sourceTree = "<group>";
+		};
+		16CA27342038D1CA00C1DE62 /* RangeSeekSlider */ = {
+			isa = PBXGroup;
+			children = (
+				16CA27372038D1D600C1DE62 /* RangeSeekSlider.swift */,
+				16CA27352038D1D600C1DE62 /* RangeSeekSliderDelegate.swift */,
+				16CA27362038D1D600C1DE62 /* TapticEngine.swift */,
+			);
+			path = RangeSeekSlider;
 			sourceTree = "<group>";
 		};
 		7BB21C6333837406196CAD19 /* Frameworks */ = {
@@ -571,14 +611,22 @@
 			files = (
 				16F628A02007F91D008A5297 /* CoreLayerManager.swift in Sources */,
 				1646B62F202BD9270050F430 /* AVAssetExtensions.swift in Sources */,
+				16CA273A2038D1D600C1DE62 /* RangeSeekSlider.swift in Sources */,
+				166ADCFD203BAF0700F7508E /* LayerSliderView.swift in Sources */,
+				16CA2740203A50AD00C1DE62 /* EditableLayerSlider.swift in Sources */,
 				1646B627202BD7F50050F430 /* CMBufferHelper.swift in Sources */,
 				1646B62B202BD82B0050F430 /* VideoAsset.swift in Sources */,
 				168E6B0A2002B32A002679A3 /* VideoExportManager.swift in Sources */,
 				168E6ADA2002AB01002679A3 /* ViewController.swift in Sources */,
+				16CA27382038D1D600C1DE62 /* RangeSeekSliderDelegate.swift in Sources */,
 				169008E5200FDDDE00E5A476 /* FramesScrollerView.swift in Sources */,
+				16CA27392038D1D600C1DE62 /* TapticEngine.swift in Sources */,
 				168E6AD82002AB01002679A3 /* AppDelegate.swift in Sources */,
 				168E6B082002ADA9002679A3 /* FileHelpers.swift in Sources */,
 				1646B62D202BD8560050F430 /* CanvasView.swift in Sources */,
+				166ADCFF203BBAF500F7508E /* VideoEditorViewController.swift in Sources */,
+				16CA273120389C2700C1DE62 /* LayerTableViewController.swift in Sources */,
+				16CA273320389CFC00C1DE62 /* LayerTableViewCell.swift in Sources */,
 				1646B629202BD8070050F430 /* CGSizeExtensions.swift in Sources */,
 				16F6289E2007F824008A5297 /* CoreAnimationManager.swift in Sources */,
 			);

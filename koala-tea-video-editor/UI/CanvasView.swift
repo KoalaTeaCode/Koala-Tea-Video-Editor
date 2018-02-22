@@ -40,17 +40,3 @@ extension CanvasFrameSizes {
         }
     }
 }
-
-public class CanvasView: UIView {
-    let contentView: UIView
-
-    override public init(frame: CGRect) {
-        contentView = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
-
-        super.init(frame: frame)
-    }
-
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}

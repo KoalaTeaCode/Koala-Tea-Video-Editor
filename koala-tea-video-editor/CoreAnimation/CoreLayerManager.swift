@@ -173,7 +173,7 @@ extension CATextLayer {
             assertionFailure("No new size was given")
             return
         }
-        
+
         self.frame.size.height = newSize.height
     }
 }

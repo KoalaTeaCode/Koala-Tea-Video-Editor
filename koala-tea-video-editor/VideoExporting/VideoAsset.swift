@@ -7,6 +7,7 @@
 //
 
 import AVFoundation
+import KoalaTeaPlayer
 
 public class TimePoints {
     public var startTime: CMTime
@@ -55,7 +56,6 @@ public class VideoAsset {
         let timePoints = TimePoints(startTime: kCMTimeZero, endTime: self.urlAsset.duration)
         self.timePoints = timePoints
 
-        print(urlAsset.tracks.first!.naturalSize)
         self.frame = frame
     }
 
