@@ -11,14 +11,16 @@ import UIKit
 /// Container view for slider that manages an EditableLayer
 class LayerSliderView: UIView {
 
-    var editableLayer: CATextEditableLayer
+    var editableLayer: EditableLayer
     let rangeSlider = EditableLayerSlider(frame: .zero)
 
-    init(frame: CGRect, editableLayer: CATextEditableLayer, assetDuration: Double) {
+    init(frame: CGRect, editableLayer: EditableLayer, assetDuration: Double) {
         self.editableLayer = editableLayer
         super.init(frame: frame)
 
         rangeSlider.width = self.width
+        rangeSlider.lineHeight = frame.height
+
         rangeSlider.duration = assetDuration
         rangeSlider.editableLayer = editableLayer
         rangeSlider.delegate = self
@@ -29,7 +31,6 @@ class LayerSliderView: UIView {
         self.addSubview(rangeSlider)
 
         self.height = rangeSlider.fullHeight
-
     }
 
     required init?(coder aDecoder: NSCoder) {

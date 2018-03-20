@@ -18,6 +18,10 @@ class VideoEditorViewController: UIViewController {
         return UIView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.width))
     }()
 
+    var containerView: LayerContainerViewOLD = LayerContainerViewOLD(frame: .zero, layerViews: [])
+
+    var buttonView: UIView = UIView()
+
     required init(videoAsset: VideoAsset) {
         self.videoAsset = videoAsset
         let asset = Asset(assetName: videoAsset.assetName, url: videoAsset.urlAsset.url)
@@ -47,7 +51,19 @@ class VideoEditorViewController: UIViewController {
 
         self.canvasView.addSubview(playerView)
 
+        self.buttonView.frame = CGRect(x: 0, y: self.canvasView.frame.maxY, width: 375, height: 40)
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
+        button.setTitle("Add", for: .normal)
+        button.addTarget(self, action: #selector(self.addButtonPressed), for: .touchUpInside)
+        self.buttonView.addSubview(button)
+        self.buttonView.backgroundColor = .blue
+        self.view.addSubview(self.buttonView)
+
         self.setupContainerView()
+    }
+
+    @objc func addButtonPressed() {
+        self.addLayer()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -66,39 +82,37 @@ class VideoEditorViewController: UIViewController {
     }
 
     func setupContainerView() {
+//        let views = [
+//            LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
+//            ,LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
+//            ,LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
+//            ,LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
+//            ,LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
+//            ,LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
+//            ,LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
+//        ]
+
+        let containerFrame = CGRect(x: 0, y: self.canvasView.frame.maxY + 40, width: 375, height: 200)
+        self.containerView = LayerContainerViewOLD(frame: containerFrame, layerViews: [])
+        self.view.addSubview(containerView)
+    }
+
+    func addLayer() {
         let duration = self.videoAsset.urlAsset.duration.seconds
-        let textLayer = CATextEditableLayer()
-        textLayer.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
-        textLayer.setText(to: "TESTING")
-        textLayer.setFont(to: .italicSystemFont(ofSize: 70))
-        textLayer.setTextColor(to: .red)
+        let textLayer = EditableLayer()
+        textLayer.frame = CGRect(x: 0, y: 0, width: 200, height: 100)
+        textLayer.backgroundColor = UIColor.random
+//        textLayer.text = "TESTING"
+//        textLayer.font = .italicSystemFont(ofSize: 70)
+//        textLayer.textColor = .red
         textLayer.setStartTime(to: 3)
         textLayer.setEndTime(to: 6)
 
+        let layerSliderView = LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
 
-        let views = [
-            LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
-            ,LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
-            ,LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
-            ,LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
-            ,LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
-            ,LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
-            ,LayerSliderView(frame: .zero, editableLayer: textLayer, assetDuration: duration)
-        ]
+        self.containerView.addSubviewToStackView(layerSliderView)
 
-        for view in views {
-            view.editableLayer.addToSuperview(self.view)
-        }
-
-        let containerFrame = CGRect(x: 0, y: self.canvasView.frame.maxY + 40, width: 375, height: 200)
-        let containerView = LayerContainerView(frame: containerFrame, layerViews: views)
-        self.view.addSubview(containerView)
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            for view in views {
-                view.editableLayer.frame = CGRect(x: 130, y: 30, width: 200, height: 200)
-            }
-        }
+        self.canvasView.addSubview(textLayer)
     }
 }
 

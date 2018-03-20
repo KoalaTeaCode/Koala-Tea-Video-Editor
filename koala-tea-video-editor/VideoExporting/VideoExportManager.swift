@@ -335,6 +335,51 @@ extension VideoExportManager {
         avMutableVideoComposition.frameDuration = CMTimeMake(1, 30)
         avMutableVideoComposition.renderSize = exportVideoSize
 
+
+        //@TODO: Clean this up
+//        /*
+//         MARK: Parent Layer
+//         This layer is for adding all of our CALayers that will go over the video layer
+//         */
+//        let parentlayer = CALayer()
+//        parentlayer.frame = CGRect(x: 0, y: 0, width: 1024, height: 1024)
+//        parentlayer.isGeometryFlipped = true
+////        parentlayer.addSublayer(videolayer)
+//
+//        let label = UILabel(text: "TESTINGTESTINGTESTINGTESTINGTESTING")
+//        label.font = UIFont.boldSystemFont(ofSize: 40)
+//        label.frame = CGRect(x: 0, y: 0, width: 700, height: 200)
+//        label.textColor = .red
+//        label.backgroundColor = .yellow
+//        label.layer.display()
+//
+//        let view = UIView()
+//        view.frame = CGRect(x: 50, y: 50, width: 200, height: 200)
+//        view.backgroundColor = .yellow
+//
+//        let layer = CALayer()
+//        layer.backgroundColor = UIColor.red.cgColor
+//        layer.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+//
+//        parentlayer.addSublayer(label.layer)
+////        parentlayer.addSublayer(view.layer)
+//
+//        /*
+//         MARK: Animation Sync Layer
+//         */
+//        let avSynchronizedLayer = AVSynchronizedLayer()
+//        // Add parent layer to contents
+//        avSynchronizedLayer.contents = parentlayer
+//        avSynchronizedLayer.frame = parentlayer.frame
+//        avSynchronizedLayer.masksToBounds = true
+//
+//        // Add avSynchronizedLayer to Parent Layer
+//        parentlayer.addSublayer(avSynchronizedLayer)
+//
+//
+//        avMutableVideoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: parentlayer, in: parentlayer)
+
+        // @TODO: Add audio tracks
         // - Audio track
         if let loadedAudioAsset = assets.first?.urlAsset {
             let audioTrack = mixComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: 0)

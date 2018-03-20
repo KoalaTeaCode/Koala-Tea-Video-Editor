@@ -10,18 +10,10 @@ import UIKit
 import AVFoundation
 import KoalaTeaPlayer
 
-protocol EditableLayerProtocol {
-    var startTime: Double { get }
-    var endTime: Double { get }
-    var frame: CGRect { get set }
-    func setStartTime(to time: Double)
-    func setEndTime(to time: Double)
-    func frameWasSet()
-    func handlePlaying(at time: Double)
-}
-
-class LayerContainerView: UIScrollView {
+class LayerContainerViewOLD: UIScrollView {
     let layerViews: [LayerSliderView]
+
+    let stackView: UIStackView = UIStackView()
 
     required init(frame: CGRect, layerViews: [LayerSliderView]) {
         self.layerViews = layerViews
@@ -30,15 +22,22 @@ class LayerContainerView: UIScrollView {
 
         self.backgroundColor = UIColor(red: 0.152941176470588, green: 0.149019607843137, blue: 0.152941176470588, alpha: 1.0)
 
-        self.addSubviews(layerViews)
-        for (index, subview) in self.subviews.enumerated() {
-            subview.width = self.width
-            self.contentSize.height += subview.height
-            subview.frame.origin.y += (subview.height * CGFloat(index))
-        }
+        stackView.alignment = .fill
+        stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
+        stackView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
+        stackView.width = self.width
+        self.addSubview(self.stackView)
 
-        self.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
+        self.bottomAnchor.constraint(equalTo: stackView.bottomAnchor).isActive = true
+        self.rightAnchor.constraint(equalTo: stackView.rightAnchor).isActive = true
+
+        self.contentInset = UIEdgeInsets(top: 16, left: 150, bottom: 0, right: 0)
         self.setContentOffset(CGPoint(x: 0, y: -self.contentInset.top), animated: false)
+
+//        for view in layerViews {
+//            self.addSubviewToStackView(view)
+//        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -50,82 +49,47 @@ class LayerContainerView: UIScrollView {
             layer.editableLayer.handlePlaying(at: time)
         }
     }
-}
 
-class EditableLayer: EditableLayerProtocol {
-    var frame: CGRect {
-        didSet {
-            self.frameWasSet()
+    /// Use this instead of just adding a subview
+    func addSubviewToStackView(_ view: UIView) {
+        // Index 0 is for the video player
+        self.stackView.addArrangedSubview(view)
+
+//        self.setContentOffset(CGPoint(x: 0, y: -self.contentInset.top), animated: true)
+        for (subview) in self.stackView.subviews {
+            subview.width = self.width
+            stackView.height = subview.height * CGFloat(self.stackView.subviews.count)
         }
     }
+}
 
-    var startTime: Double
+class EditableLayer: DraggableView {
+    var startTime: Double = 0
+    var endTime: Double = 0
 
-    var endTime: Double
+    var animations: [CABasicAnimation] = []
+    var visible: Bool = false
 
-    init() {
-        self.frame = .zero
-        self.startTime = 0
-        self.endTime = 0
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     func setStartTime(to time: Double) {
         self.startTime = time
-    }
-
-    func setEndTime(to time: Double) {
-        self.endTime = time
-    }
-
-    func frameWasSet() {}
-
-    /// Function to handle animations in the layer by the time of a video
-    func handlePlaying(at time: Double) {}
-}
-
-class CATextEditableLayer: EditableLayer {
-    var caTextLayer: CATextLayer
-    var animations: [CABasicAnimation] = []
-    var visible: Bool = false
-
-    override init() {
-        self.caTextLayer = CoreLayerManager.createTextLayer(frame: .zero, text: "Your Text Here")
-        self.caTextLayer.opacity = 1
-
-        super.init()
-    }
-
-    func setText(to text: String) {
-        self.caTextLayer.string = text
-
-        self.caTextLayer.adjustHeightToFit()
-    }
-
-    func setFont(to font: UIFont) {
-        self.caTextLayer.font = font
-        self.caTextLayer.fontSize = font.pointSize
-
-        // @TODO: Set frame height accordingly?
-
-        self.caTextLayer.adjustHeightToFit()
-    }
-
-    func setTextColor(to color: UIColor) {
-        self.caTextLayer.foregroundColor = color.cgColor
-    }
-
-    override func setStartTime(to startTime: Double) {
-        super.setStartTime(to: startTime)
 
         // Create show animation
         let animation = CABasicAnimation.showLayerAnimation(at: startTime)
-        
+
         // Add animation to [animations] to be used on export
         self.animations.append(animation)
     }
 
-    override func setEndTime(to endTime: Double) {
-        super.setEndTime(to: endTime)
+    func setEndTime(to time: Double) {
+        self.endTime = time
 
         // Create hide animation
         let animation = CABasicAnimation.hideLayerAnimation(at: endTime)
@@ -134,26 +98,17 @@ class CATextEditableLayer: EditableLayer {
         self.animations.append(animation)
     }
 
-    func addToSuperview(_ superView: UIView) {
-        superView.layer.addSublayer(self.caTextLayer)
-    }
-
-    override func frameWasSet() {
-        self.caTextLayer.frame = self.frame
-    }
-
-    override func handlePlaying(at time: Double) {
-        super.handlePlaying(at: time)
-
+    /// Function to handle animations in the layer by the time of a video
+    func handlePlaying(at time: Double) {
         guard time >= startTime && time <= endTime else {
-            hideLayer()
+            hideView()
             return
         }
 
-        showLayer()
+        showView()
     }
 
-    private func showLayer() {
+    private func showView() {
         guard !self.visible else {
             return
         }
@@ -161,10 +116,10 @@ class CATextEditableLayer: EditableLayer {
 
         let animation = CABasicAnimation.showLayerAnimation()
 
-        self.caTextLayer.add(animation, forKey: "show")
+        self.layer.add(animation, forKey: "show")
     }
 
-    private func hideLayer() {
+    private func hideView() {
         guard self.visible else {
             return
         }
@@ -172,72 +127,31 @@ class CATextEditableLayer: EditableLayer {
 
         let animation = CABasicAnimation.hideLayerAnimation()
 
-        self.caTextLayer.add(animation, forKey: "hide")
+        self.layer.add(animation, forKey: "hide")
     }
 }
 
 class ViewController: UIViewController {
+    var editorController: VideoEditorController
 
-    var assetPlayer: AssetPlayer?
-    var playerView: PlayerView?
-    lazy var canvasView: UIView = {
-        return UIView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.width))
-    }()
+    required init(videos: [VideoAsset]) {
+        self.editorController = VideoEditorController(videos: videos)
 
-    var images = [UIImage]()
+        super.init(nibName: nil, bundle: nil)
+    }
 
-    let tlayer = CATextEditableLayer()
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
+        let videoURL: URL = Bundle.main.url(forResource: "outputfile", withExtension: "mp4")!
+        let vid1 = VideoAsset(assetName: "", url: videoURL, frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CanvasFrameSizes._9x16(forSize: CGSize(width: 1280, height: 720)).rawValue))
+
         super.viewDidLoad()
 
-//        canvasView.center = self.view.center
-//        canvasView.clipsToBounds = true
-//        canvasView.backgroundColor = .black
-////        self.view.addSubview(canvasView)
-//
-//        let videoURL: URL = Bundle.main.url(forResource: "outputfile", withExtension: "mp4")!
-//        let asset = Asset(assetName: "Test", url: videoURL)
-//        self.assetPlayer = AssetPlayer(asset: asset)
-//        assetPlayer?.playerDelegate = self
-//        assetPlayer?.isPlayingLocalVideo = true
-//        assetPlayer?.shouldLoop = true
-//        assetPlayer?.pause()
-//
-//        playerView = assetPlayer?.playerView
-//        playerView?.frame = CGRect(x: 0, y: 0, width: canvasView.height * (16/9), height: canvasView.height)
-//
-//        canvasView.addSubview(playerView!)
-//
-//        tlayer.setText(to: "TESTING")
-//        tlayer.setFont(to: .italicSystemFont(ofSize: 150))
-//        tlayer.setTextColor(to: .red)
-//        tlayer.frame = CGRect(x: 0, y: 88, width: 200, height: 200)
-//        tlayer.setStartTime(to: 3)
-//        tlayer.setEndTime(to: 6)
-//
-//        let duration = asset.urlAsset.duration.seconds
-//        let frame = CGRect(origin: .zero, size: CGSize(width: 300, height: 0))
-//        let views = [
-//            LayerSliderView(frame: frame, editableLayer: tlayer, assetDuration: duration)
-//            ,LayerSliderView(frame: frame, editableLayer: tlayer, assetDuration: duration)
-//            ,LayerSliderView(frame: frame, editableLayer: tlayer, assetDuration: duration)
-//            ,LayerSliderView(frame: frame, editableLayer: tlayer, assetDuration: duration)
-//            ,LayerSliderView(frame: frame, editableLayer: tlayer, assetDuration: duration)
-//            ,LayerSliderView(frame: frame, editableLayer: tlayer, assetDuration: duration)
-//            ,LayerSliderView(frame: frame, editableLayer: tlayer, assetDuration: duration)
-//        ]
-//
-//        let containerFrame = CGRect(x: 0, y: 0, width: 300, height: 200)
-//        let containerView = LayerContainerView(frame: containerFrame, layerViews: views)
-//
-//        self.view.addSubview(containerView)
-
-        let videoURL: URL = Bundle.main.url(forResource: "outputfile", withExtension: "mp4")!
-        let videoAsset = VideoAsset(assetName: "Test", url: videoURL)
-
-        let vc = VideoEditorViewController(videoAsset: videoAsset)
-        self.navigationController?.present(vc, animated: true, completion: nil)
+        editorController.setupCanvasView(in: self.view, with: .zero)
+        editorController.setupTimelineView(in: self.view, with: .zero)
     }
 
     override func didReceiveMemoryWarning() {
@@ -246,6 +160,7 @@ class ViewController: UIViewController {
     }
 }
 
+// @TODO: Move this to canvas view
 extension ViewController: AssetPlayerDelegate {
     func currentAssetDidChange(_ player: AssetPlayer) {
 
@@ -255,17 +170,14 @@ extension ViewController: AssetPlayerDelegate {
         guard player.duration != 0 && !player.duration.isNaN else {
             return
         }
-//        let frame = CGRect(x: 0, y: 240, width: self.view.width, height: 180/2)
-//        let scrollerView = FramesScrollerView(frame: frame, images: self.images, framerate: 30.0, videoDuration: player.duration)
-//        scrollerView.delegate = self
-//        self.view.addSubview(scrollerView)
+
     }
 
     func playerPlaybackStateDidChange(_ player: AssetPlayer) {
     }
 
     func playerCurrentTimeDidChange(_ player: AssetPlayer) {
-        self.tlayer.handlePlaying(at: player.currentTime)
+
     }
 
     func playerPlaybackDidEnd(_ player: AssetPlayer) {
@@ -281,27 +193,134 @@ extension ViewController: AssetPlayerDelegate {
     }
 }
 
-extension ViewController: FramesScrollerViewDelegate {
-    func isScrolling(to time: Double) {
-        self.assetPlayer?.pause()
-        self.assetPlayer?.seekTo(interval: time)
+//extension ViewController: TimelineViewDelegate {
+//    func isScrolling(to time: Double) {
+//        self.assetPlayer?.pause()
+//        self.assetPlayer?.seekTo(interval: time)
+//    }
+//
+//    func endScrolling(at time: Double) {
+//        // Set new start time
+//        self.assetPlayer?.startTimeForLoop = time
+//        self.assetPlayer?.seekTo(interval: time)
+//        self.assetPlayer?.play()
+//    }
+//
+//    func addLayerPressed() {
+//        // @TODO: Get current time from timeline
+//        self.layerManager.addLayer(atTime: 1.0)
+//    }
+//}
+//
+//extension ViewController: EditableLayerManagerDelegate {
+//    func didAddLayer(_ layer: EditableLayer) {
+//        // Add layer to canvas
+//        self.canvasView.addSubview(layer)
+//
+//        // Add layer to timeline
+//        self.timelineView.addLayerView(with: layer)
+//    }
+//}
+
+// MARK: VideoEditorController
+
+class VideoEditorController: NSObject {
+    var videos: [VideoAsset]
+
+    let canvasView = UIView()
+    let controlsView = UIView()
+    let timelineView = TimelineView()
+    let layerManager = EditableLayerManager()
+
+    init(videos: [VideoAsset]) {
+        self.videos = videos
+
+        super.init()
+
+        layerManager.delegate = self
+        timelineView.delegate = self
+//        controlsView.delegate = self
     }
 
-    func endScrolling(at time: Double) {
-        // Set new start time
-        self.assetPlayer?.startTimeForLoop = time
-        self.assetPlayer?.seekTo(interval: time)
-        self.assetPlayer?.play()
+    func setupCanvasView(in view: UIView, with frame: CGRect) {
+        self.canvasView.frame = frame
+        view.addSubview(self.canvasView)
+    }
+
+    func setupTimelineView(in view: UIView, with frame: CGRect) {
+        self.timelineView.frame = frame
+        view.addSubview(self.timelineView)
+
+        self.timelineView.setupTimeline()
+    }
+
+    func setupControlsView(in: UIView, with frame: CGRect) {
+        // Controls view
+//        controlsView.frame = CGRect(origin: .zero, size: CGSize(width: self.width, height: 40.0))
+//        self.addSubview(controlsView)
+
+//        let button = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: controlsView.height * 3, height: controlsView.height)))
+//        button.setTitle("Add Layer", for: .normal)
+//        button.addTarget(self, action: #selector(self.buttonTouched), for: .touchUpInside)
+//        self.controlsView.addSubview(button)
+    }
+
+    // @TODO: move this to controls view delegate
+    func addLayerPressed() {
+        // @TODO: Get current time from timeline
+        self.layerManager.addLayer(atTime: 1.0)
     }
 }
 
-extension ViewController: RangeSeekSliderDelegate {
-    func didStartTouches(in slider: RangeSeekSlider) {
-        self.view.bringSubview(toFront: slider)
+extension VideoEditorController: TimelineViewDelegate {
+    func isScrolling(to time: Double) {
+//        self.assetPlayer?.pause()
+//        self.assetPlayer?.seekTo(interval: time)
     }
 
-    func rangeSeekSlider(_ slider: RangeSeekSlider, didChange minValue: CGFloat, maxValue: CGFloat) {
-        print(minValue)
-        print(maxValue)
+    func endScrolling(at time: Double) {
+//        // Set new start time
+//        self.assetPlayer?.startTimeForLoop = time
+//        self.assetPlayer?.seekTo(interval: time)
+//        self.assetPlayer?.play()
+    }
+}
+
+extension VideoEditorController: EditableLayerManagerDelegate {
+    func didAddLayer(_ layer: EditableLayer) {
+        // Add layer to canvas
+        self.canvasView.addSubview(layer)
+
+        // Add layer to timeline
+        self.timelineView.addLayerView(with: layer)
+    }
+}
+
+// MARK: Editable Layer Manager
+
+protocol EditableLayerManagerDelegate: NSObjectProtocol {
+    func didAddLayer(_ layer: EditableLayer)
+}
+
+class EditableLayerManager: NSObject {
+    weak var delegate: EditableLayerManagerDelegate?
+
+    var layers = [EditableLayer]()
+
+    override init() {
+        super.init()
+
+    }
+
+    func addLayer(atTime startTime: Double) {
+        let layer = EditableLayer()
+        layer.frame = CGRect(x: 0, y: 0, width: 200, height: 100)
+        layer.backgroundColor = UIColor.random
+        layer.setStartTime(to: startTime)
+        layer.setEndTime(to: startTime + 1)
+
+        self.layers.append(layer)
+
+        delegate?.didAddLayer(layer)
     }
 }

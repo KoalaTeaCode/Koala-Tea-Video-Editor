@@ -47,6 +47,14 @@ public class VideoAsset {
 
     public var frame: CGRect
 
+    public var framerate: Double? {
+        guard let track = self.urlAsset.getFirstVideoTrack() else {
+            assertionFailure("No first video track")
+            return nil
+        }
+
+        return Double(track.nominalFrameRate)
+    }
 
     public init(assetName: String, url: URL, frame: CGRect = CGRect.zero) {
         self.assetName = assetName

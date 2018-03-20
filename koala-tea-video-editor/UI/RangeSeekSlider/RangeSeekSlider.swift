@@ -231,7 +231,7 @@ import UIKit
     }
 
     public var fullHeight: CGFloat {
-        return labelHeight + labelPadding + labelHeight
+        return labelHeight + labelPadding + lineHeight
     }
 
     /// The label displayed in accessibility mode for minimum value handler. If not set, the default is empty String.
@@ -321,7 +321,7 @@ import UIKit
 
     open override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         let touchLocation: CGPoint = touch.location(in: self)
-        let insetExpansion: CGFloat = -30.0
+        let insetExpansion: CGFloat = -50.0
         let isTouchingLeftHandle: Bool = leftHandle.frame.insetBy(dx: insetExpansion, dy: insetExpansion).contains(touchLocation)
         let isTouchingRightHandle: Bool = rightHandle.frame.insetBy(dx: insetExpansion, dy: insetExpansion).contains(touchLocation)
 
@@ -505,7 +505,8 @@ import UIKit
     }
 
     private func updateLineHeight() {
-        let barSidePadding: CGFloat = 16.0
+        // @TODO: Dynamic padding
+        let barSidePadding: CGFloat = 0.0
         let yMiddle: CGFloat = frame.height / 2.0
         let lineLeftSide: CGPoint = CGPoint(x: barSidePadding, y: yMiddle)
         let lineRightSide: CGPoint = CGPoint(x: frame.width - barSidePadding,

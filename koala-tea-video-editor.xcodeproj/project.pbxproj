@@ -15,8 +15,12 @@
 		1646B62B202BD82B0050F430 /* VideoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1646B62A202BD82B0050F430 /* VideoAsset.swift */; };
 		1646B62D202BD8560050F430 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1646B62C202BD8560050F430 /* CanvasView.swift */; };
 		1646B62F202BD9270050F430 /* AVAssetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1646B62E202BD9270050F430 /* AVAssetExtensions.swift */; };
+		164A4DE2204FA7A200381539 /* LayerScrollerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164A4DE1204FA7A200381539 /* LayerScrollerView.swift */; };
+		164A4DE620561C8C00381539 /* LayerContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164A4DE520561C8C00381539 /* LayerContainerView.swift */; };
+		164A4DE820561CFF00381539 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164A4DE720561CFF00381539 /* TimelineView.swift */; };
 		166ADCFD203BAF0700F7508E /* LayerSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166ADCFC203BAF0700F7508E /* LayerSliderView.swift */; };
 		166ADCFF203BBAF500F7508E /* VideoEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166ADCFE203BBAF500F7508E /* VideoEditorViewController.swift */; };
+		16767441204C9EC1000088D6 /* DraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16767440204C9EC1000088D6 /* DraggableView.swift */; };
 		168E6AD82002AB01002679A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AD72002AB01002679A3 /* AppDelegate.swift */; };
 		168E6ADA2002AB01002679A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AD92002AB01002679A3 /* ViewController.swift */; };
 		168E6ADD2002AB01002679A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 168E6ADB2002AB01002679A3 /* Main.storyboard */; };
@@ -65,8 +69,12 @@
 		1646B62A202BD82B0050F430 /* VideoAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAsset.swift; sourceTree = "<group>"; };
 		1646B62C202BD8560050F430 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		1646B62E202BD9270050F430 /* AVAssetExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAssetExtensions.swift; sourceTree = "<group>"; };
+		164A4DE1204FA7A200381539 /* LayerScrollerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerScrollerView.swift; sourceTree = "<group>"; };
+		164A4DE520561C8C00381539 /* LayerContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerContainerView.swift; sourceTree = "<group>"; };
+		164A4DE720561CFF00381539 /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		166ADCFC203BAF0700F7508E /* LayerSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSliderView.swift; sourceTree = "<group>"; };
 		166ADCFE203BBAF500F7508E /* VideoEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEditorViewController.swift; sourceTree = "<group>"; };
+		16767440204C9EC1000088D6 /* DraggableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableView.swift; sourceTree = "<group>"; };
 		168E6AD42002AB01002679A3 /* koala-tea-video-editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "koala-tea-video-editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		168E6AD72002AB01002679A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		168E6AD92002AB01002679A3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -171,6 +179,10 @@
 				16CA273020389C2700C1DE62 /* LayerTableViewController.swift */,
 				16CA273220389CFB00C1DE62 /* LayerTableViewCell.swift */,
 				166ADCFE203BBAF500F7508E /* VideoEditorViewController.swift */,
+				16767440204C9EC1000088D6 /* DraggableView.swift */,
+				164A4DE1204FA7A200381539 /* LayerScrollerView.swift */,
+				164A4DE520561C8C00381539 /* LayerContainerView.swift */,
+				164A4DE720561CFF00381539 /* TimelineView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -609,18 +621,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16767441204C9EC1000088D6 /* DraggableView.swift in Sources */,
 				16F628A02007F91D008A5297 /* CoreLayerManager.swift in Sources */,
 				1646B62F202BD9270050F430 /* AVAssetExtensions.swift in Sources */,
 				16CA273A2038D1D600C1DE62 /* RangeSeekSlider.swift in Sources */,
 				166ADCFD203BAF0700F7508E /* LayerSliderView.swift in Sources */,
 				16CA2740203A50AD00C1DE62 /* EditableLayerSlider.swift in Sources */,
 				1646B627202BD7F50050F430 /* CMBufferHelper.swift in Sources */,
+				164A4DE820561CFF00381539 /* TimelineView.swift in Sources */,
 				1646B62B202BD82B0050F430 /* VideoAsset.swift in Sources */,
 				168E6B0A2002B32A002679A3 /* VideoExportManager.swift in Sources */,
 				168E6ADA2002AB01002679A3 /* ViewController.swift in Sources */,
 				16CA27382038D1D600C1DE62 /* RangeSeekSliderDelegate.swift in Sources */,
 				169008E5200FDDDE00E5A476 /* FramesScrollerView.swift in Sources */,
+				164A4DE620561C8C00381539 /* LayerContainerView.swift in Sources */,
 				16CA27392038D1D600C1DE62 /* TapticEngine.swift in Sources */,
+				164A4DE2204FA7A200381539 /* LayerScrollerView.swift in Sources */,
 				168E6AD82002AB01002679A3 /* AppDelegate.swift in Sources */,
 				168E6B082002ADA9002679A3 /* FileHelpers.swift in Sources */,
 				1646B62D202BD8560050F430 /* CanvasView.swift in Sources */,
@@ -798,7 +814,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6MS9QWALYV;
 				INFOPLIST_FILE = "koala-tea-video-editor/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "koala-tea.koala-tea-video-editor";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -815,7 +831,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6MS9QWALYV;
 				INFOPLIST_FILE = "koala-tea-video-editor/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "koala-tea.koala-tea-video-editor";
 				PRODUCT_NAME = "$(TARGET_NAME)";
