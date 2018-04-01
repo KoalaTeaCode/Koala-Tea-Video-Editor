@@ -19,7 +19,6 @@
 		164A4DE620561C8C00381539 /* LayerContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164A4DE520561C8C00381539 /* LayerContainerView.swift */; };
 		164A4DE820561CFF00381539 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164A4DE720561CFF00381539 /* TimelineView.swift */; };
 		166ADCFD203BAF0700F7508E /* LayerSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166ADCFC203BAF0700F7508E /* LayerSliderView.swift */; };
-		166ADCFF203BBAF500F7508E /* VideoEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166ADCFE203BBAF500F7508E /* VideoEditorViewController.swift */; };
 		16767441204C9EC1000088D6 /* DraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16767440204C9EC1000088D6 /* DraggableView.swift */; };
 		168E6AD82002AB01002679A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AD72002AB01002679A3 /* AppDelegate.swift */; };
 		168E6ADA2002AB01002679A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AD92002AB01002679A3 /* ViewController.swift */; };
@@ -30,9 +29,6 @@
 		168E6AF82002AB01002679A3 /* koala_tea_video_editorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AF72002AB01002679A3 /* koala_tea_video_editorUITests.swift */; };
 		168E6B082002ADA9002679A3 /* FileHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6B072002ADA9002679A3 /* FileHelpers.swift */; };
 		168E6B0A2002B32A002679A3 /* VideoExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6B092002B32A002679A3 /* VideoExportManager.swift */; };
-		169008E5200FDDDE00E5A476 /* FramesScrollerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169008E4200FDDDE00E5A476 /* FramesScrollerView.swift */; };
-		16CA273120389C2700C1DE62 /* LayerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CA273020389C2700C1DE62 /* LayerTableViewController.swift */; };
-		16CA273320389CFC00C1DE62 /* LayerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CA273220389CFB00C1DE62 /* LayerTableViewCell.swift */; };
 		16CA27382038D1D600C1DE62 /* RangeSeekSliderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CA27352038D1D600C1DE62 /* RangeSeekSliderDelegate.swift */; };
 		16CA27392038D1D600C1DE62 /* TapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CA27362038D1D600C1DE62 /* TapticEngine.swift */; };
 		16CA273A2038D1D600C1DE62 /* RangeSeekSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CA27372038D1D600C1DE62 /* RangeSeekSlider.swift */; };
@@ -73,7 +69,6 @@
 		164A4DE520561C8C00381539 /* LayerContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerContainerView.swift; sourceTree = "<group>"; };
 		164A4DE720561CFF00381539 /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		166ADCFC203BAF0700F7508E /* LayerSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSliderView.swift; sourceTree = "<group>"; };
-		166ADCFE203BBAF500F7508E /* VideoEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEditorViewController.swift; sourceTree = "<group>"; };
 		16767440204C9EC1000088D6 /* DraggableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableView.swift; sourceTree = "<group>"; };
 		168E6AD42002AB01002679A3 /* koala-tea-video-editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "koala-tea-video-editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		168E6AD72002AB01002679A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -90,9 +85,6 @@
 		168E6AF92002AB01002679A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		168E6B072002ADA9002679A3 /* FileHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelpers.swift; sourceTree = "<group>"; };
 		168E6B092002B32A002679A3 /* VideoExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExportManager.swift; sourceTree = "<group>"; };
-		169008E4200FDDDE00E5A476 /* FramesScrollerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramesScrollerView.swift; sourceTree = "<group>"; };
-		16CA273020389C2700C1DE62 /* LayerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerTableViewController.swift; sourceTree = "<group>"; };
-		16CA273220389CFB00C1DE62 /* LayerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerTableViewCell.swift; sourceTree = "<group>"; };
 		16CA27352038D1D600C1DE62 /* RangeSeekSliderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSeekSliderDelegate.swift; sourceTree = "<group>"; };
 		16CA27362038D1D600C1DE62 /* TapticEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapticEngine.swift; sourceTree = "<group>"; };
 		16CA27372038D1D600C1DE62 /* RangeSeekSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSeekSlider.swift; sourceTree = "<group>"; };
@@ -174,11 +166,7 @@
 				166ADCFB203BAEEC00F7508E /* LayerUI */,
 				16CA27342038D1CA00C1DE62 /* RangeSeekSlider */,
 				168E6AD92002AB01002679A3 /* ViewController.swift */,
-				169008E4200FDDDE00E5A476 /* FramesScrollerView.swift */,
 				1646B62C202BD8560050F430 /* CanvasView.swift */,
-				16CA273020389C2700C1DE62 /* LayerTableViewController.swift */,
-				16CA273220389CFB00C1DE62 /* LayerTableViewCell.swift */,
-				166ADCFE203BBAF500F7508E /* VideoEditorViewController.swift */,
 				16767440204C9EC1000088D6 /* DraggableView.swift */,
 				164A4DE1204FA7A200381539 /* LayerScrollerView.swift */,
 				164A4DE520561C8C00381539 /* LayerContainerView.swift */,
@@ -633,16 +621,12 @@
 				168E6B0A2002B32A002679A3 /* VideoExportManager.swift in Sources */,
 				168E6ADA2002AB01002679A3 /* ViewController.swift in Sources */,
 				16CA27382038D1D600C1DE62 /* RangeSeekSliderDelegate.swift in Sources */,
-				169008E5200FDDDE00E5A476 /* FramesScrollerView.swift in Sources */,
 				164A4DE620561C8C00381539 /* LayerContainerView.swift in Sources */,
 				16CA27392038D1D600C1DE62 /* TapticEngine.swift in Sources */,
 				164A4DE2204FA7A200381539 /* LayerScrollerView.swift in Sources */,
 				168E6AD82002AB01002679A3 /* AppDelegate.swift in Sources */,
 				168E6B082002ADA9002679A3 /* FileHelpers.swift in Sources */,
 				1646B62D202BD8560050F430 /* CanvasView.swift in Sources */,
-				166ADCFF203BBAF500F7508E /* VideoEditorViewController.swift in Sources */,
-				16CA273120389C2700C1DE62 /* LayerTableViewController.swift in Sources */,
-				16CA273320389CFC00C1DE62 /* LayerTableViewCell.swift in Sources */,
 				1646B629202BD8070050F430 /* CGSizeExtensions.swift in Sources */,
 				16F6289E2007F824008A5297 /* CoreAnimationManager.swift in Sources */,
 			);

@@ -39,6 +39,10 @@ class TimelineView: UIView {
     public func addLayerView(with layer: EditableLayer) {
         self.layerScrollerView.addLayerView(with: layer)
     }
+
+    public func handleTracking(forMillisecond millisecond: Double) {
+        self.layerScrollerView.handleTracking(forMillisecond: millisecond)
+    }
 }
 
 extension TimelineView: LayerScrollerDelegate {

@@ -45,7 +45,7 @@ public class VideoAsset {
         return CMTimeRangeMake(timePoints.startTime, duration)
     }
 
-    public var frame: CGRect
+    public var frame: CGRect = .zero
 
     public var framerate: Double? {
         guard let track = self.urlAsset.getFirstVideoTrack() else {
@@ -56,15 +56,19 @@ public class VideoAsset {
         return Double(track.nominalFrameRate)
     }
 
-    public init(assetName: String, url: URL, frame: CGRect = CGRect.zero) {
+    public init(assetName: String, url: URL) {
         self.assetName = assetName
         let avURLAsset = AVURLAsset(url: url, options: [AVURLAssetPreferPreciseDurationAndTimingKey: true])
         self.urlAsset = avURLAsset
 
         let timePoints = TimePoints(startTime: kCMTimeZero, endTime: self.urlAsset.duration)
         self.timePoints = timePoints
+    }
 
-        self.frame = frame
+    public func setupFrameFrom(_ canvasFrame: CGRect) {
+        let size = CanvasFrameSizes._16x9(forSize: canvasFrame.size).rawValue
+        let origin = CGPoint(x: 0, y: canvasFrame.height / 2 - size.height / 2)
+        self.frame = CGRect(origin: origin, size: size)
     }
 
     // @TODO: What is a good timescale to use? Does the timescale need to depend on framerate?

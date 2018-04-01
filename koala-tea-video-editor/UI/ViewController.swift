@@ -10,58 +10,10 @@ import UIKit
 import AVFoundation
 import KoalaTeaPlayer
 
-class LayerContainerViewOLD: UIScrollView {
-    let layerViews: [LayerSliderView]
-
-    let stackView: UIStackView = UIStackView()
-
-    required init(frame: CGRect, layerViews: [LayerSliderView]) {
-        self.layerViews = layerViews
-
-        super.init(frame: frame)
-
-        self.backgroundColor = UIColor(red: 0.152941176470588, green: 0.149019607843137, blue: 0.152941176470588, alpha: 1.0)
-
-        stackView.alignment = .fill
-        stackView.axis = .vertical
-        stackView.distribution = .fillProportionally
-        stackView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
-        stackView.width = self.width
-        self.addSubview(self.stackView)
-
-        self.bottomAnchor.constraint(equalTo: stackView.bottomAnchor).isActive = true
-        self.rightAnchor.constraint(equalTo: stackView.rightAnchor).isActive = true
-
-        self.contentInset = UIEdgeInsets(top: 16, left: 150, bottom: 0, right: 0)
-        self.setContentOffset(CGPoint(x: 0, y: -self.contentInset.top), animated: false)
-
-//        for view in layerViews {
-//            self.addSubviewToStackView(view)
-//        }
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    public func handlePlaying(at time: Double) {
-        for layer in layerViews {
-            layer.editableLayer.handlePlaying(at: time)
-        }
-    }
-
-    /// Use this instead of just adding a subview
-    func addSubviewToStackView(_ view: UIView) {
-        // Index 0 is for the video player
-        self.stackView.addArrangedSubview(view)
-
-//        self.setContentOffset(CGPoint(x: 0, y: -self.contentInset.top), animated: true)
-        for (subview) in self.stackView.subviews {
-            subview.width = self.width
-            stackView.height = subview.height * CGFloat(self.stackView.subviews.count)
-        }
-    }
-}
+// VC
+import AVKit
+import MobileCoreServices
+import Photos
 
 class EditableLayer: DraggableView {
     var startTime: Double = 0
@@ -132,6 +84,52 @@ class EditableLayer: DraggableView {
 }
 
 class ViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        let videoURL: URL = Bundle.main.url(forResource: "outputfile", withExtension: "mp4")!
+        let vid1 = VideoAsset(assetName: "", url: videoURL)
+
+        let vc = EditorViewController(videos: [vid1])
+        self.navigationController?.present(vc, animated: true, completion: nil)
+
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.delegate = self
+        imagePickerController.mediaTypes = [kUTTypeMovie as String]
+        if #available(iOS 11.0, *) {
+            imagePickerController.videoExportPreset = AVAssetExportPresetPassthrough
+        } else {
+            // Fallback on earlier versions
+            // @TODO: Compression will happen here
+            imagePickerController.videoQuality = .typeHigh
+        }
+
+        self.present(imagePickerController, animated: true, completion: nil)
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+}
+
+extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let videoURL = info[UIImagePickerControllerMediaURL] as? URL
+        print("videoURL:\(String(describing: videoURL))")
+        self.dismiss(animated: true, completion: nil)
+
+        let vid1 = VideoAsset(assetName: "", url: videoURL!)
+
+        let vc = EditorViewController(videos: [vid1])
+        self.navigationController?.present(vc, animated: true, completion: nil)
+    }
+}
+
+
+// EditorViewController
+class EditorViewController: UIViewController {
     var editorController: VideoEditorController
 
     required init(videos: [VideoAsset]) {
@@ -145,13 +143,11 @@ class ViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-        let videoURL: URL = Bundle.main.url(forResource: "outputfile", withExtension: "mp4")!
-        let vid1 = VideoAsset(assetName: "", url: videoURL, frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CanvasFrameSizes._9x16(forSize: CGSize(width: 1280, height: 720)).rawValue))
-
         super.viewDidLoad()
+        editorController.setupCanvasView(in: self.view, with: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.width))
 
-        editorController.setupCanvasView(in: self.view, with: .zero)
-        editorController.setupTimelineView(in: self.view, with: .zero)
+        let timelineHeight = self.view.height - self.editorController.canvasView.height + 44 // 44 is controls view height
+        editorController.setupTimelineView(in: self.view, with: CGRect(x: 0, y: self.view.width, width: self.view.width, height: timelineHeight))
     }
 
     override func didReceiveMemoryWarning() {
@@ -161,37 +157,37 @@ class ViewController: UIViewController {
 }
 
 // @TODO: Move this to canvas view
-extension ViewController: AssetPlayerDelegate {
-    func currentAssetDidChange(_ player: AssetPlayer) {
-
-    }
-
-    func playerIsSetup(_ player: AssetPlayer) {
-        guard player.duration != 0 && !player.duration.isNaN else {
-            return
-        }
-
-    }
-
-    func playerPlaybackStateDidChange(_ player: AssetPlayer) {
-    }
-
-    func playerCurrentTimeDidChange(_ player: AssetPlayer) {
-
-    }
-
-    func playerPlaybackDidEnd(_ player: AssetPlayer) {
-
-    }
-
-    func playerIsLikelyToKeepUp(_ player: AssetPlayer) {
-
-    }
-
-    func playerBufferTimeDidChange(_ player: AssetPlayer) {
-
-    }
-}
+//extension ViewController: AssetPlayerDelegate {
+//    func currentAssetDidChange(_ player: AssetPlayer) {
+//
+//    }
+//
+//    func playerIsSetup(_ player: AssetPlayer) {
+//        guard player.duration != 0 && !player.duration.isNaN else {
+//            return
+//        }
+//
+//    }
+//
+//    func playerPlaybackStateDidChange(_ player: AssetPlayer) {
+//    }
+//
+//    func playerCurrentTimeDidChange(_ player: AssetPlayer) {
+//
+//    }
+//
+//    func playerPlaybackDidEnd(_ player: AssetPlayer) {
+//
+//    }
+//
+//    func playerIsLikelyToKeepUp(_ player: AssetPlayer) {
+//
+//    }
+//
+//    func playerBufferTimeDidChange(_ player: AssetPlayer) {
+//
+//    }
+//}
 
 //extension ViewController: TimelineViewDelegate {
 //    func isScrolling(to time: Double) {
@@ -222,12 +218,78 @@ extension ViewController: AssetPlayerDelegate {
 //    }
 //}
 
+class CanvasView: UIView {
+    weak var delegate: AssetPlayerDelegate?
+
+    var assetPlayer: AssetPlayer?
+    var playerView: PlayerView?
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func setupPlayer(with video: VideoAsset) {
+        video.setupFrameFrom(self.frame)
+
+        let asset = Asset(assetName: video.assetName, url: video.urlAsset.url)
+        self.assetPlayer = AssetPlayer(asset: asset)
+        self.assetPlayer?.isPlayingLocalVideo = true
+        self.assetPlayer?.shouldLoop = true
+        self.assetPlayer?.pause()
+
+        self.playerView = assetPlayer?.playerView
+        playerView?.frame = video.frame
+
+        self.assetPlayer?.playerDelegate = self
+
+        self.addSubview(self.playerView!)
+    }
+}
+
+extension CanvasView: AssetPlayerDelegate {
+    func currentAssetDidChange(_ player: AssetPlayer) {
+        self.delegate?.currentAssetDidChange(player)
+    }
+
+    func playerIsSetup(_ player: AssetPlayer) {
+//        guard player.duration != 0 && !player.duration.isNaN else {
+//            return
+//        }
+        self.delegate?.playerIsSetup(player)
+    }
+
+    func playerPlaybackStateDidChange(_ player: AssetPlayer) {
+        self.delegate?.playerPlaybackStateDidChange(player)
+    }
+
+    func playerCurrentTimeDidChange(_ player: AssetPlayer) {
+        self.delegate?.playerCurrentTimeDidChange(player)
+    }
+
+    func playerPlaybackDidEnd(_ player: AssetPlayer) {
+        self.delegate?.playerPlaybackDidEnd(player)
+    }
+
+    func playerIsLikelyToKeepUp(_ player: AssetPlayer) {
+        self.delegate?.playerIsLikelyToKeepUp(player)
+    }
+
+    func playerBufferTimeDidChange(_ player: AssetPlayer) {
+        self.delegate?.playerBufferTimeDidChange(player)
+    }
+}
+
 // MARK: VideoEditorController
 
 class VideoEditorController: NSObject {
     var videos: [VideoAsset]
 
-    let canvasView = UIView()
+    let canvasView = CanvasView()
     let controlsView = UIView()
     let timelineView = TimelineView()
     let layerManager = EditableLayerManager()
@@ -239,12 +301,15 @@ class VideoEditorController: NSObject {
 
         layerManager.delegate = self
         timelineView.delegate = self
+        canvasView.delegate = self
 //        controlsView.delegate = self
     }
 
     func setupCanvasView(in view: UIView, with frame: CGRect) {
         self.canvasView.frame = frame
         view.addSubview(self.canvasView)
+
+        self.canvasView.setupPlayer(with: videos.first!)
     }
 
     func setupTimelineView(in view: UIView, with frame: CGRect) {
@@ -272,20 +337,22 @@ class VideoEditorController: NSObject {
     }
 }
 
+// Timeline View delegate
 extension VideoEditorController: TimelineViewDelegate {
     func isScrolling(to time: Double) {
-//        self.assetPlayer?.pause()
-//        self.assetPlayer?.seekTo(interval: time)
+        self.canvasView.assetPlayer?.pause()
+        self.canvasView.assetPlayer?.seekTo(interval: time)
     }
 
     func endScrolling(at time: Double) {
-//        // Set new start time
-//        self.assetPlayer?.startTimeForLoop = time
-//        self.assetPlayer?.seekTo(interval: time)
-//        self.assetPlayer?.play()
+        // Set new start time
+        self.canvasView.assetPlayer?.startTimeForLoop = time
+        self.canvasView.assetPlayer?.seekTo(interval: time)
+        self.canvasView.assetPlayer?.play()
     }
 }
 
+// Layer Manager Delegate
 extension VideoEditorController: EditableLayerManagerDelegate {
     func didAddLayer(_ layer: EditableLayer) {
         // Add layer to canvas
@@ -293,6 +360,45 @@ extension VideoEditorController: EditableLayerManagerDelegate {
 
         // Add layer to timeline
         self.timelineView.addLayerView(with: layer)
+    }
+}
+
+// Canvas View Delegate
+extension VideoEditorController: AssetPlayerDelegate {
+    func currentAssetDidChange(_ player: AssetPlayer) {
+//        self.delegate?.currentAssetDidChange(player)
+    }
+
+    func playerIsSetup(_ player: AssetPlayer) {
+        //        guard player.duration != 0 && !player.duration.isNaN else {
+        //            return
+        //        }
+//        self.delegate?.playerIsSetup(player)
+    }
+
+    func playerPlaybackStateDidChange(_ player: AssetPlayer) {
+//        self.delegate?.playerPlaybackStateDidChange(player)
+    }
+
+    func playerCurrentTimeDidChange(_ player: AssetPlayer) {
+//        self.delegate?.playerCurrentTimeDidChange(player)
+
+        // Handle tracking for canvas view
+
+        // Handle tracking for timeline view
+        self.timelineView.handleTracking(forMillisecond: player.currentTime)
+    }
+
+    func playerPlaybackDidEnd(_ player: AssetPlayer) {
+//        self.delegate?.playerPlaybackDidEnd(player)
+    }
+
+    func playerIsLikelyToKeepUp(_ player: AssetPlayer) {
+//        self.delegate?.playerIsLikelyToKeepUp(player)
+    }
+
+    func playerBufferTimeDidChange(_ player: AssetPlayer) {
+//        self.delegate?.playerBufferTimeDidChange(player)
     }
 }
 
@@ -322,5 +428,11 @@ class EditableLayerManager: NSObject {
         self.layers.append(layer)
 
         delegate?.didAddLayer(layer)
+    }
+
+    public func handleTracking(forMillisecond millisecond: Double) {
+        for layer in self.layers {
+            layer.handlePlaying(at: millisecond)
+        }
     }
 }

@@ -27,6 +27,7 @@ class LayerScrollerView: UIView {
     private var videoFrameWidth: CGFloat {
         return 50 * (16/9)
     }
+
     private var widthFromVideoDuration: CGFloat {
         let totalVideoFrames = videoDuration * framerate
         let frameCountForView = totalVideoFrames * 0.1
@@ -72,6 +73,17 @@ class LayerScrollerView: UIView {
         self.scrollView.contentSize = self.layerContainerView.size
     }
 
+    public func handleTracking(forMillisecond millisecond: Double) {
+        // Calculate size per second
+        let pointsPerSecond: Double =  Double(self.scrollView.contentSize.width) / self.videoDuration
+        // Calculate x scroll value by millisecond time * points per millisecond
+        let x = millisecond * (pointsPerSecond / 1000)
+
+        // Scroll to time
+        let frame = CGRect(x: x, y: 0, width: 0.001, height: 0.001)
+        self.scrollView.scrollRectToVisible(frame, animated: true)
+    }
+
     private func setupViews() {
         self.setupScrollView()
 
@@ -99,7 +111,7 @@ class LayerScrollerView: UIView {
 
 extension LayerScrollerView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.handleScroll(from: scrollView)
+//        self.handleScroll(from: scrollView)
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -137,7 +149,7 @@ class FrameLayerView: UIView {
         super.init(frame: .zero)
 
         let videoURL: URL = Bundle.main.url(forResource: "outputfile", withExtension: "mp4")!
-        let video = VideoAsset(assetName: "vert", url: videoURL, frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CanvasFrameSizes._9x16(forSize: CGSize(width: 720, height: 720)).rawValue))
+        let video = VideoAsset(assetName: "vert", url: videoURL)
 
         guard let images = video.urlAsset.getAllFramesAsUIImages() else {
             assertionFailure("dont get here")
