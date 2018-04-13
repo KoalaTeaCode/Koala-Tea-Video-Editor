@@ -16,7 +16,11 @@ protocol TimelineViewDelegate: class {
 class TimelineView: UIView {
     weak var delegate: TimelineViewDelegate?
 
-    var layerScrollerView: LayerScrollerView!
+    private var layerScrollerView: LayerScrollerView!
+
+    public var currentTimeForLinePosition: Double {
+        return self.layerScrollerView.currentTimeForLinePosition
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,7 +30,7 @@ class TimelineView: UIView {
     func setupTimeline() {
         // Layer Scroller View
         let frame = CGRect(x: 0, y: 0, width: self.width, height: self.height)
-        layerScrollerView = LayerScrollerView(frame: frame, framerate: 24, videoDuration: 10)
+        layerScrollerView = LayerScrollerView(frame: frame, framerate: 24, videoDuration: 9.77)
         layerScrollerView.backgroundColor = .darkGray
         layerScrollerView.delegate = self
         self.addSubview(layerScrollerView)
@@ -40,8 +44,8 @@ class TimelineView: UIView {
         self.layerScrollerView.addLayerView(with: layer)
     }
 
-    public func handleTracking(forMillisecond millisecond: Double) {
-        self.layerScrollerView.handleTracking(forMillisecond: millisecond)
+    public func handleTracking(for time: Double) {
+        self.layerScrollerView.handleTracking(for: time)
     }
 }
 
@@ -50,7 +54,7 @@ extension TimelineView: LayerScrollerDelegate {
         delegate?.isScrolling(to: time)
     }
 
-    func endScrolling(at time: Double) {
+    func endScrolling(to time: Double) {
         delegate?.endScrolling(at: time)
     }
 }

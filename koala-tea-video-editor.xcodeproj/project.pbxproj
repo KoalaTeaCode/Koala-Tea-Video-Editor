@@ -29,6 +29,9 @@
 		168E6AF82002AB01002679A3 /* koala_tea_video_editorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6AF72002AB01002679A3 /* koala_tea_video_editorUITests.swift */; };
 		168E6B082002ADA9002679A3 /* FileHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6B072002ADA9002679A3 /* FileHelpers.swift */; };
 		168E6B0A2002B32A002679A3 /* VideoExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E6B092002B32A002679A3 /* VideoExportManager.swift */; };
+		16934BD9207A92940050CBBF /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16934BD8207A92940050CBBF /* HomeViewController.swift */; };
+		16934BDB207A96260050CBBF /* badday.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 16934BDA207A96250050CBBF /* badday.mp3 */; };
+		16934BDF207AED580050CBBF /* party.wav in Resources */ = {isa = PBXBuildFile; fileRef = 16934BDE207AED580050CBBF /* party.wav */; };
 		16CA27382038D1D600C1DE62 /* RangeSeekSliderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CA27352038D1D600C1DE62 /* RangeSeekSliderDelegate.swift */; };
 		16CA27392038D1D600C1DE62 /* TapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CA27362038D1D600C1DE62 /* TapticEngine.swift */; };
 		16CA273A2038D1D600C1DE62 /* RangeSeekSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CA27372038D1D600C1DE62 /* RangeSeekSlider.swift */; };
@@ -85,6 +88,9 @@
 		168E6AF92002AB01002679A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		168E6B072002ADA9002679A3 /* FileHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelpers.swift; sourceTree = "<group>"; };
 		168E6B092002B32A002679A3 /* VideoExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExportManager.swift; sourceTree = "<group>"; };
+		16934BD8207A92940050CBBF /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		16934BDA207A96250050CBBF /* badday.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = badday.mp3; sourceTree = "<group>"; };
+		16934BDE207AED580050CBBF /* party.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = party.wav; sourceTree = "<group>"; };
 		16CA27352038D1D600C1DE62 /* RangeSeekSliderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSeekSliderDelegate.swift; sourceTree = "<group>"; };
 		16CA27362038D1D600C1DE62 /* TapticEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapticEngine.swift; sourceTree = "<group>"; };
 		16CA27372038D1D600C1DE62 /* RangeSeekSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSeekSlider.swift; sourceTree = "<group>"; };
@@ -237,6 +243,7 @@
 		168E6AD62002AB01002679A3 /* koala-tea-video-editor */ = {
 			isa = PBXGroup;
 			children = (
+				16934BD4207A83320050CBBF /* mvp */,
 				168E6AE32002AB01002679A3 /* Info.plist */,
 				1646B631202BD99D0050F430 /* Core */,
 				1646B630202BD9880050F430 /* Resources */,
@@ -265,6 +272,16 @@
 				168E6AF92002AB01002679A3 /* Info.plist */,
 			);
 			path = "koala-tea-video-editorUITests";
+			sourceTree = "<group>";
+		};
+		16934BD4207A83320050CBBF /* mvp */ = {
+			isa = PBXGroup;
+			children = (
+				16934BDE207AED580050CBBF /* party.wav */,
+				16934BDA207A96250050CBBF /* badday.mp3 */,
+				16934BD8207A92940050CBBF /* HomeViewController.swift */,
+			);
+			path = mvp;
 			sourceTree = "<group>";
 		};
 		16CA27342038D1CA00C1DE62 /* RangeSeekSlider */ = {
@@ -377,6 +394,7 @@
 				TargetAttributes = {
 					168E6AD32002AB01002679A3 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -425,6 +443,8 @@
 				168E6ADF2002AB01002679A3 /* Assets.xcassets in Resources */,
 				1638809F200D181500C4A3B7 /* outputfile.mp4 in Resources */,
 				168E6ADD2002AB01002679A3 /* Main.storyboard in Resources */,
+				16934BDB207A96260050CBBF /* badday.mp3 in Resources */,
+				16934BDF207AED580050CBBF /* party.wav in Resources */,
 				1646B625202BD4210050F430 /* vertical.mp4 in Resources */,
 				16DCC7A2202E97D900B941F8 /* Default-568h@2x.png in Resources */,
 			);
@@ -586,16 +606,20 @@
 				"${BUILT_PRODUCTS_DIR}/KTResponsiveUI/KTResponsiveUI.framework",
 				"${BUILT_PRODUCTS_DIR}/KoalaTeaPlayer/KoalaTeaPlayer.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SoundWave/SoundWave.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftIcons/SwiftIcons.framework",
 				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/ZHWaveform/ZHWaveform.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KTResponsiveUI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KoalaTeaPlayer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SoundWave.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftIcons.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZHWaveform.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -614,6 +638,7 @@
 				1646B62F202BD9270050F430 /* AVAssetExtensions.swift in Sources */,
 				16CA273A2038D1D600C1DE62 /* RangeSeekSlider.swift in Sources */,
 				166ADCFD203BAF0700F7508E /* LayerSliderView.swift in Sources */,
+				16934BD9207A92940050CBBF /* HomeViewController.swift in Sources */,
 				16CA2740203A50AD00C1DE62 /* EditableLayerSlider.swift in Sources */,
 				1646B627202BD7F50050F430 /* CMBufferHelper.swift in Sources */,
 				164A4DE820561CFF00381539 /* TimelineView.swift in Sources */,
@@ -795,6 +820,7 @@
 			baseConfigurationReference = B5712B90FEF184948CB7E03F /* Pods-koala-tea-video-editor.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6MS9QWALYV;
 				INFOPLIST_FILE = "koala-tea-video-editor/Info.plist";
@@ -802,6 +828,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "koala-tea.koala-tea-video-editor";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -812,6 +839,7 @@
 			baseConfigurationReference = AD89767B4ECBC23E01882F79 /* Pods-koala-tea-video-editor.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6MS9QWALYV;
 				INFOPLIST_FILE = "koala-tea-video-editor/Info.plist";

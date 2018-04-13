@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DraggableView: UIView, UIGestureRecognizerDelegate {
+class DraggableView: UILabel, UIGestureRecognizerDelegate {
     var maxScale: CGFloat = 1000
     var minScale: CGFloat = 20
 

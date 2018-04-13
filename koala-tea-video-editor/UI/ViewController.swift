@@ -20,10 +20,31 @@ class EditableLayer: DraggableView {
     var endTime: Double = 0
 
     var animations: [CABasicAnimation] = []
-    var visible: Bool = false
+    var visible: Bool = true
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didtap(_:)))
+        doubleTapGesture.numberOfTapsRequired = 2
+        self.addGestureRecognizer(doubleTapGesture)
+    }
+
+    // @TODO: Replace alert with handling text
+    @objc func didtap(_ gesture: UITapGestureRecognizer) {
+        let alert = UIAlertController(title: "Add Text", message: nil, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Done", style: .default) { (action) in
+            guard let textfield = alert.textFields?.first else {
+                return
+            }
+
+            self.text = textfield.text
+        }
+        alert.addAction(action)
+
+        alert.addTextField { (textfield) in }
+
+        superview!.parentViewController!.present(alert, animated: true, completion: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -146,8 +167,10 @@ class EditorViewController: UIViewController {
         super.viewDidLoad()
         editorController.setupCanvasView(in: self.view, with: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.width))
 
-        let timelineHeight = self.view.height - self.editorController.canvasView.height + 44 // 44 is controls view height
-        editorController.setupTimelineView(in: self.view, with: CGRect(x: 0, y: self.view.width, width: self.view.width, height: timelineHeight))
+        editorController.setupControlsView(in: self.view, with: CGRect(x: 0, y: self.view.width, width: self.view.width, height: 44))
+
+        let timelineHeight = self.view.height - self.editorController.canvasView.height - 44 // 44 is controls view height
+        editorController.setupTimelineView(in: self.view, with: CGRect(x: 0, y: self.view.width + 44, width: self.view.width, height: timelineHeight))
     }
 
     override func didReceiveMemoryWarning() {
@@ -252,6 +275,10 @@ class CanvasView: UIView {
 }
 
 extension CanvasView: AssetPlayerDelegate {
+    func playerCurrentTimeDidChangeInMilliseconds(_ player: AssetPlayer) {
+        self.delegate?.playerCurrentTimeDidChangeInMilliseconds(player)
+    }
+
     func currentAssetDidChange(_ player: AssetPlayer) {
         self.delegate?.currentAssetDidChange(player)
     }
@@ -319,21 +346,33 @@ class VideoEditorController: NSObject {
         self.timelineView.setupTimeline()
     }
 
-    func setupControlsView(in: UIView, with frame: CGRect) {
+    func setupControlsView(in view: UIView, with frame: CGRect) {
         // Controls view
-//        controlsView.frame = CGRect(origin: .zero, size: CGSize(width: self.width, height: 40.0))
-//        self.addSubview(controlsView)
+        controlsView.frame = frame
 
-//        let button = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: controlsView.height * 3, height: controlsView.height)))
-//        button.setTitle("Add Layer", for: .normal)
-//        button.addTarget(self, action: #selector(self.buttonTouched), for: .touchUpInside)
-//        self.controlsView.addSubview(button)
+        let button = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: controlsView.height * 3, height: controlsView.height)))
+        button.setTitle("Add Layer", for: .normal)
+        button.addTarget(self, action: #selector(self.addLayerPressed), for: .touchUpInside)
+        self.controlsView.addSubview(button)
+
+
+        let playButtonWidth = controlsView.height * 3
+        let playButton = UIButton(frame: CGRect(x: controlsView.center.x - playButtonWidth / 2, y: 0, width: playButtonWidth, height: controlsView.height))
+        playButton.setTitle("Play", for: .normal)
+        playButton.addTarget(self, action: #selector(self.playButtonPressed), for: .touchUpInside)
+        self.controlsView.addSubview(playButton)
+
+        view.addSubview(self.controlsView)
     }
 
     // @TODO: move this to controls view delegate
-    func addLayerPressed() {
+    @objc func playButtonPressed() {
+        self.canvasView.assetPlayer?.play()
+    }
+
+    @objc func addLayerPressed() {
         // @TODO: Get current time from timeline
-        self.layerManager.addLayer(atTime: 1.0)
+        self.layerManager.addLayer(atTime: self.timelineView.currentTimeForLinePosition)
     }
 }
 
@@ -348,7 +387,7 @@ extension VideoEditorController: TimelineViewDelegate {
         // Set new start time
         self.canvasView.assetPlayer?.startTimeForLoop = time
         self.canvasView.assetPlayer?.seekTo(interval: time)
-        self.canvasView.assetPlayer?.play()
+//        self.canvasView.assetPlayer?.play()
     }
 }
 
@@ -382,11 +421,14 @@ extension VideoEditorController: AssetPlayerDelegate {
 
     func playerCurrentTimeDidChange(_ player: AssetPlayer) {
 //        self.delegate?.playerCurrentTimeDidChange(player)
+    }
 
+    func playerCurrentTimeDidChangeInMilliseconds(_ player: AssetPlayer) {
         // Handle tracking for canvas view
-
+        self.layerManager.handleTracking(for: player.currentTime)
+        
         // Handle tracking for timeline view
-        self.timelineView.handleTracking(forMillisecond: player.currentTime)
+        self.timelineView.handleTracking(for: player.currentTime)
     }
 
     func playerPlaybackDidEnd(_ player: AssetPlayer) {
@@ -421,16 +463,21 @@ class EditableLayerManager: NSObject {
     func addLayer(atTime startTime: Double) {
         let layer = EditableLayer()
         layer.frame = CGRect(x: 0, y: 0, width: 200, height: 100)
-        layer.backgroundColor = UIColor.random
+//        layer.backgroundColor = UIColor.random
         layer.setStartTime(to: startTime)
         layer.setEndTime(to: startTime + 1)
+
+        layer.text = "NO"
+        layer.textColor = .white
+        layer.font = UIFont.boldSystemFont(ofSize: 40)
+        layer.textAlignment = .center
 
         self.layers.append(layer)
 
         delegate?.didAddLayer(layer)
     }
 
-    public func handleTracking(forMillisecond millisecond: Double) {
+    public func handleTracking(for millisecond: Double) {
         for layer in self.layers {
             layer.handlePlaying(at: millisecond)
         }

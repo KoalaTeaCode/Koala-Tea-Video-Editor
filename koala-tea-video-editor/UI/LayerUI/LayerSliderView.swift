@@ -25,8 +25,8 @@ class LayerSliderView: UIView {
         rangeSlider.editableLayer = editableLayer
         rangeSlider.delegate = self
 
-        rangeSlider.selectedMinValue = 0
-        rangeSlider.selectedMaxValue = 1
+        rangeSlider.selectedMinValue = CGFloat(editableLayer.startTime)
+        rangeSlider.selectedMaxValue = CGFloat(editableLayer.endTime)
 
         self.addSubview(rangeSlider)
 

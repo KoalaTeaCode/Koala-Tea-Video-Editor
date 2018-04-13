@@ -10,11 +10,13 @@ import UIKit
 
 protocol LayerScrollerDelegate: class {
     func isScrolling(to time: Double)
-    func endScrolling(at time: Double)
+    func endScrolling(to time: Double)
 }
 
 class LayerScrollerView: UIView {
     weak var delegate: LayerScrollerDelegate?
+
+    var scrollingProgrammatically: Bool = false
 
     let scrollView = UIScrollView()
     let layerContainerView = LayerContainerView()
@@ -34,6 +36,21 @@ class LayerScrollerView: UIView {
         // Frame count for view * width wanted for each frame
         let totalWidth = CGFloat(frameCountForView) * videoFrameWidth
         return totalWidth
+    }
+
+    public var currentTimeForLinePosition: Double {
+        let xOffset = self.scrollView.contentOffset.x
+        let leftInset = self.scrollView.contentInset.left
+        let center = xOffset + leftInset
+
+        let timePerPoint: Double = self.videoDuration / Double(self.scrollView.contentSize.width)
+        let videoTime = Double(center) * timePerPoint
+
+        guard videoTime >= 0 else {
+            return 0.0
+        }
+
+        return videoTime
     }
 
     required init(frame: CGRect, framerate: Double, videoDuration: Double) {
@@ -73,15 +90,23 @@ class LayerScrollerView: UIView {
         self.scrollView.contentSize = self.layerContainerView.size
     }
 
-    public func handleTracking(forMillisecond millisecond: Double) {
+    public func handleTracking(for time: Double) {
+        guard !self.scrollView.isTracking else {
+            return
+        }
+
         // Calculate size per second
         let pointsPerSecond: Double =  Double(self.scrollView.contentSize.width) / self.videoDuration
-        // Calculate x scroll value by millisecond time * points per millisecond
-        let x = millisecond * (pointsPerSecond / 1000)
+        // Calculate x scroll value
+        let x = time * (pointsPerSecond)
+        let y = self.scrollView.contentOffset.y
 
         // Scroll to time
-        let frame = CGRect(x: x, y: 0, width: 0.001, height: 0.001)
-        self.scrollView.scrollRectToVisible(frame, animated: true)
+        let frame = CGRect(x: x, y: Double(y), width: 0.001, height: 0.001)
+
+        self.scrollingProgrammatically = true
+        self.scrollView.scrollRectToVisible(frame, animated: false)
+        self.scrollingProgrammatically = false
     }
 
     private func setupViews() {
@@ -111,7 +136,8 @@ class LayerScrollerView: UIView {
 
 extension LayerScrollerView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        self.handleScroll(from: scrollView)
+
+        self.handleScroll2(from: scrollView)
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -125,6 +151,24 @@ extension LayerScrollerView: UIScrollViewDelegate {
     }
 
     func handleScroll(from scrollView: UIScrollView) {
+        guard !self.scrollingProgrammatically else {
+            return
+        }
+
+        let videoTime = self.currentTimeForLinePosition
+
+        guard videoTime <= videoDuration else {
+            delegate?.endScrolling(to: videoDuration)
+            return
+        }
+        delegate?.endScrolling(to: videoTime)
+    }
+
+    func handleScroll2(from scrollView: UIScrollView) {
+        guard !self.scrollingProgrammatically else {
+            return
+        }
+
         let xOffset = scrollView.contentOffset.x
         let leftInset = scrollView.contentInset.left
         let center = xOffset + leftInset
@@ -133,14 +177,14 @@ extension LayerScrollerView: UIScrollViewDelegate {
         let videoTime = Double(center) * timePerPoint
 
         guard videoTime >= 0 else {
-            delegate?.endScrolling(at: 0.0)
+            delegate?.isScrolling(to: 0.0)
             return
         }
         guard videoTime <= videoDuration else {
-            delegate?.endScrolling(at: videoDuration)
+            delegate?.isScrolling(to: videoDuration)
             return
         }
-        delegate?.endScrolling(at: videoTime)
+        delegate?.isScrolling(to: videoTime)
     }
 }
 
