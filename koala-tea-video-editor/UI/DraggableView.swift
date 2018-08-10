@@ -89,7 +89,7 @@ class DraggableView: UILabel, UIGestureRecognizerDelegate {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.superview?.bringSubview(toFront: self)
+//        self.superview?.bringSubview(toFront: self)
     }
 }
 

@@ -7,8 +7,8 @@ target 'koala-tea-video-editor' do
 
   # Pods for koala-tea-video-editor
   pod 'KoalaTeaPlayer', '~> 0.2.7'
-  pod "SoundWave"
-  pod 'ZHWaveform', '~> 1.0.2'
+  pod 'Alamofire'
+  pod 'SwiftVideoGenerator'
 
   target 'koala-tea-video-editorTests' do
     inherit! :search_paths

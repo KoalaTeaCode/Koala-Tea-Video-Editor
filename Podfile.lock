@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (4.7.1)
   - KoalaTeaPlayer (0.2.7):
     - KTResponsiveUI
     - SnapKit
@@ -6,7 +7,6 @@ PODS:
     - SwiftIcons
   - KTResponsiveUI (0.2.6)
   - SnapKit (4.0.0)
-  - SoundWave (0.1.2)
   - SwifterSwift (4.1.1):
     - SwifterSwift/AppKit (= 4.1.1)
     - SwifterSwift/CoreGraphics (= 4.1.1)
@@ -21,22 +21,22 @@ PODS:
   - SwifterSwift/SwiftStdlib (4.1.1)
   - SwifterSwift/UIKit (4.1.1)
   - SwiftIcons (2.0.1)
-  - ZHWaveform (1.0.2)
+  - SwiftVideoGenerator (1.1.4)
 
 DEPENDENCIES:
+  - Alamofire
   - KoalaTeaPlayer (~> 0.2.7)
-  - SoundWave
-  - ZHWaveform (~> 1.0.2)
+  - SwiftVideoGenerator
 
 SPEC CHECKSUMS:
+  Alamofire: 68d7d521118d49c615a8d2214d87cdf525599d30
   KoalaTeaPlayer: 6f9df0f08113765d5195c0e447b1a64966dc1507
   KTResponsiveUI: c8a75fe5270e05749a5ca8d20ab008a285b5e260
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
-  SoundWave: 74af192045482ba1b881c6fd063655bb46162fa0
   SwifterSwift: bfcae9d659dfd306d164f13f72cad09198f30723
   SwiftIcons: e475a56ae2c2da40672dbf16061ca5dd5cee7dbb
-  ZHWaveform: 847ecaf2ae3b941e5403d81762742610e659ebe0
+  SwiftVideoGenerator: 18a99f288efa47ae6808e0ddd305cce1e9d9f6fb
 
-PODFILE CHECKSUM: f3906eb0532cf05a81e0a846e27d4e286f0cea49
+PODFILE CHECKSUM: 89e83d3a2b6fe30ff6a6c88eb375daf8e9927ab3
 
 COCOAPODS: 1.4.0

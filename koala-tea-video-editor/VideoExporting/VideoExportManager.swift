@@ -8,6 +8,7 @@
 
 import AVFoundation
 import UIKit
+import Photos // @TODO: Remove photos from here
 
 /// Exporter for VideoAssets
 public class VideoExportManager {
@@ -29,10 +30,12 @@ public class VideoExportManager {
      */
     public enum VideoExportSizes {
         case _1080x1080
+        case _1024x1024
         case _1280x720
         case _720x1280
         case _1920x1080
         case _1080x1920
+        case _1280x1024_twitter
 
         typealias RawValue = CGSize
 
@@ -40,6 +43,8 @@ public class VideoExportManager {
             switch self {
             case ._1080x1080:
                 return CGSize(width: 1080, height: 1080)
+            case ._1024x1024:
+                return CGSize(width: 1024, height: 1024)
             case ._1280x720:
                 return CGSize(width: 1280, height: 720)
             case ._720x1280:
@@ -48,6 +53,8 @@ public class VideoExportManager {
                 return CGSize(width: 1920, height: 1080)
             case ._1080x1920:
                 return CGSize(width: 1080, height: 1920)
+            case ._1280x1024_twitter:
+                return CGSize(width: 1280, height: 1024)
             }
         }
     }
@@ -229,7 +236,7 @@ extension VideoExportManager {
         guard let fileURL = FileHelpers.getDocumentsURL(for: "test", extension: "mp4") else {
             return
         }
-
+        
         // Remove any file at URL
         // If file exists assetExport will fail
         FileHelpers.removeFileAtURL(fileURL: fileURL)
@@ -259,7 +266,17 @@ extension VideoExportManager {
             case .completed:
                 print("success")
                 success()
-                print(fileURL)
+                print(fileURL, "success file url")
+                PHPhotoLibrary.shared().performChanges({
+                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: fileURL)
+                }) { saved, error in
+                    if saved {
+                        let alertController = UIAlertController(title: "Your video was successfully saved", message: nil, preferredStyle: .alert)
+                        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alertController.addAction(defaultAction)
+//                        self.present(alertController, animated: true, completion: nil)
+                    }
+                }
                 break
             case .exporting:
                 assertionFailure("exporting")
@@ -427,6 +444,7 @@ extension VideoExportManager {
             let track = composition.addMutableTrack(withMediaType: AVMediaType.video, preferredTrackID: Int32(kCMPersistentTrackID_Invalid))
             do {
                 let timeRange = asset.timeRange
+
                 guard let firstTrack = asset.urlAsset.tracks(withMediaType: AVMediaType.video).first else {
                     throw VideoManagerError.NoFirstVideoTrack
                 }
@@ -498,4 +516,135 @@ extension VideoExportManager {
 //        }
 //        return (assetOrientation, isPortrait)
 //    }
+}
+
+extension VideoExportManager {
+    public static func exportVideoTest(with audio: [VideoAsset],
+                                         canvasViewFrame: CGRect,
+                                         finalExportSize: VideoExportSizes,
+                                         viewToAdd: UIView,
+                                         progress: @escaping (Float) -> (),
+                                         success: @escaping () -> (),
+                                         failure: @escaping (Error) -> ()) {
+        let exportVideoSize = finalExportSize.rawValue
+
+        // Canvas view has to be same aspect ratio as export video size
+        guard canvasViewFrame.size.getAspectRatio() == exportVideoSize.getAspectRatio() else {
+            assertionFailure("Seleected export size's aspect ratio does not equal Cropped View Frame's aspect ratio")
+            return
+        }
+
+        // Multipliers to scale height and width to final export size
+        let heightMultiplier: CGFloat = exportVideoSize.height / canvasViewFrame.height
+        let widthMultiplier: CGFloat = exportVideoSize.width / canvasViewFrame.width
+
+        // 1 - Create AVMutableComposition object. This object will hold your AVMutableCompositionTrack instances.
+        let mixComposition = AVMutableComposition()
+
+        //// Create video tracks ////
+        let mainInstruction = AVMutableVideoCompositionInstruction()
+
+        var totalVideoDuration = kCMTimeZero
+        totalVideoDuration = audio[0].timeRange.duration
+
+        mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, totalVideoDuration)
+
+        // 2 - Add all asset tracks to mixComposition
+        // 3 - Get instructions for all assets
+        let instructions = self.add(assets: [audio[1]], to: mixComposition, widthMultiplier: widthMultiplier, heightMultiplier: heightMultiplier)
+
+        // 4 - Add instructions to mainInstruction
+        mainInstruction.layerInstructions = instructions
+        let avMutableVideoComposition = AVMutableVideoComposition()
+        avMutableVideoComposition.instructions = [mainInstruction]
+        // @TODO: Add framerate
+        avMutableVideoComposition.frameDuration = CMTimeMake(1, 30)
+        avMutableVideoComposition.renderSize = exportVideoSize
+
+        //@TODO: Clean this up
+        /*
+         MARK: Parent Layer
+         This layer is for adding all of our CALayers that will go over the video layer
+         */
+//        let parentlayer = CALayer()
+//        parentlayer.frame = CGRect(x: 0, y: 0, width: 1024, height: 1024)
+//        parentlayer.isGeometryFlipped = true
+//        parentlayer.addSublayer(videolayer)
+
+//        let label = UILabel(text: "TESTINGTESTINGTESTINGTESTINGTESTING")
+//        label.font = UIFont.boldSystemFont(ofSize: 40)
+//        label.frame = CGRect(x: 0, y: 0, width: 700, height: 200)
+//        label.textColor = .red
+//        label.backgroundColor = .yellow
+//        label.layer.display()
+//
+//        let view = UIView()
+//        view.frame = CGRect(x: 50, y: 50, width: 200, height: 200)
+//        view.backgroundColor = .yellow
+//
+//        let layer = CALayer()
+//        layer.backgroundColor = UIColor.red.cgColor
+//        layer.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+//
+//        parentlayer.addSublayer(label.layer)
+//        parentlayer.addSublayer(view.layer)
+
+        // Scale adding view
+        let xScale = exportVideoSize.width / viewToAdd.frame.size.width
+        let yScale = exportVideoSize.height / viewToAdd.frame.size.height
+        viewToAdd.scale(by: CGPoint(x: xScale, y: yScale))
+//        viewToAdd.layer.isGeometryFlipped = true
+        viewToAdd.frame.origin = .zero
+//        viewToAdd.frame.origin = CGPoint(x: 0, y:0)
+//        viewToAdd.frame.origin = CGPoint(x: 0, y: 0)
+
+        let videoLayer = CALayer()
+        videoLayer.frame = CGRect(origin: .zero, size: exportVideoSize)
+
+        let parentlayer = viewToAdd.layer
+//        parentlayer.frame = CGRect(origin: .zero, size: exportVideoSize)
+        parentlayer.isGeometryFlipped = true
+//        viewToAdd.layer.changePositionX(to: 100, beginTime: 0, duration: 12)
+//        parentlayer.addSublayer(videoLayer)
+//        parentlayer.addSublayer(viewToAdd.layer)
+
+//        var fadeAnimation = CABasicAnimation(keyPath: "opacity")
+//        fadeAnimation.fromValue = 1.0
+//        fadeAnimation.toValue = 0.0
+//        fadeAnimation.isAdditive = false
+//        fadeAnimation.isRemovedOnCompletion = false
+//        fadeAnimation.beginTime = 2.0
+//        fadeAnimation.duration = 2.0
+//        fadeAnimation.fillMode = kCAFillModeBoth
+//        parentlayer.add(fadeAnimation, forKey: nil)
+
+        /*
+         MARK: Animation Sync Layer
+         */
+        let avSynchronizedLayer = AVSynchronizedLayer()
+        // Add parent layer to contents
+        avSynchronizedLayer.contents = parentlayer
+        avSynchronizedLayer.frame = CGRect(origin: .zero, size: exportVideoSize)
+        avSynchronizedLayer.masksToBounds = true
+
+        // Add avSynchronizedLayer to Parent Layer
+        parentlayer.addSublayer(avSynchronizedLayer)
+
+        avMutableVideoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: parentlayer, in: parentlayer)
+
+        // @TODO: Add audio tracks
+        // - Audio track
+        let loadedAudioAsset = audio[0].urlAsset
+        let audioTrack = mixComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: 0)
+        do {
+            try audioTrack?.insertTimeRange(audio[0].timeRange,
+                                            of: loadedAudioAsset.tracks(withMediaType: .audio).first!,
+                                            at: kCMTimeZero)
+        } catch _ {
+            print("Failed to load audio track")
+        }
+
+        // - Export
+        self.exportVideoToDiskFrom(avMutableComposition: mixComposition, avMutatableVideoComposition: avMutableVideoComposition, progress: progress, success: success, failure: failure)
+    }
 }

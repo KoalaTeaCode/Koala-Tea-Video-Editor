@@ -16,6 +16,7 @@ enum CanvasFrameSizes {
     case _4x3(forSize: CGSize)
     case _2x1(forSize: CGSize)
     case _1x2(forSize: CGSize)
+    case twitter(forSize: CGSize)
 }
 
 extension CanvasFrameSizes {
@@ -37,6 +38,8 @@ extension CanvasFrameSizes {
             return CGSize(width: 1, height: 2).aspectFit(to: frameSize)
         case ._2x1(let frameSize):
             return CGSize(width: 2, height: 1).aspectFit(to: frameSize)
+        case .twitter(let frameSize):
+            return CGSize(width: 1280, height: 1024).aspectFit(to: frameSize)
         }
     }
 }
